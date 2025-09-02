@@ -1,0 +1,116 @@
+import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import request from 'supertest';
+import { UserModule } from '../src/user/user.module';
+import { User } from '../src/user/entities/user.entity';
+import { Task } from '../src/task/entities/task.entity';
+
+jest.setTimeout(30000);
+
+describe('User CRUD (e2e)', () => {
+  let app: INestApplication;
+
+  beforeAll(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [
+        TypeOrmModule.forRoot({
+          type: 'postgres',
+          host: process.env.DB_HOST || 'localhost',
+          port: parseInt(process.env.DB_PORT || '5433', 10),
+          username: process.env.DB_USER || 'postgres',
+          password: process.env.DB_PASS || 'postgres',
+          database: process.env.DB_NAME || 'nest_db',
+          entities: [User, Task],
+          synchronize: true,
+        }),
+        UserModule,
+      ],
+    }).compile();
+
+    app = moduleFixture.createNestApplication();
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        forbidUnknownValues: true,
+        stopAtFirstError: true,
+        transform: true,
+      }),
+    );
+    await app.init();
+  });
+
+  afterAll(async () => {
+    await app.close();
+  });
+
+  it('creates, reads, updates and deletes a user', async () => {
+    const server = app.getHttpServer();
+
+    // Snapshot initial count to ensure no residue
+    const initialListRes = await request(server).get('/user').expect(200);
+    const initialCount: number = Array.isArray(initialListRes.body)
+      ? initialListRes.body.length
+      : 0;
+
+    const createPayload = {
+      name: 'Alice Test',
+      email: `alice_${Date.now()}@example.com`,
+      password: 'Password@123',
+      role: 'editor',
+    };
+
+    // Create
+    const createRes = await request(server)
+      .post('/user')
+      .send(createPayload)
+      .expect(201);
+
+    expect(createRes.body).toHaveProperty('id');
+    expect(createRes.body.name).toBe(createPayload.name);
+    expect(createRes.body.email).toBe(createPayload.email);
+    const id = createRes.body.id as string;
+
+    // Read by email
+    const getByEmailRes = await request(server)
+      .get(`/user/email/${encodeURIComponent(createPayload.email)}`)
+      .expect(200);
+    expect(getByEmailRes.body).toHaveProperty('id', id);
+
+    // Read by id
+    const getByIdRes = await request(server)
+      .get(`/user/id/${id}`)
+      .expect(200);
+    expect(getByIdRes.body).toHaveProperty('email', createPayload.email);
+
+    // Update
+    const updatePayload = { name: 'Alice Updated' };
+    const updateRes = await request(server)
+      .patch(`/user/${id}`)
+      .send(updatePayload)
+      .expect(200);
+    // TypeORM UpdateResult: ensure one row affected
+    expect(updateRes.body).toHaveProperty('affected', 1);
+
+    // Verify update
+    const verifyUpdateRes = await request(server)
+      .get(`/user/id/${id}`)
+      .expect(200);
+    expect(verifyUpdateRes.body).toHaveProperty('name', updatePayload.name);
+
+    // Delete
+    const deleteRes = await request(server)
+      .delete(`/user/${id}`)
+      .expect(200);
+    expect(deleteRes.body).toHaveProperty('affected', 1);
+
+    // Ensure the deleted user is not present anymore
+    const listRes = await request(server)
+      .get('/user')
+      .expect(200);
+    expect(Array.isArray(listRes.body)).toBe(true);
+    const ids: string[] = listRes.body.map((u: any) => u.id);
+    expect(ids).not.toContain(id);
+  });
+});
