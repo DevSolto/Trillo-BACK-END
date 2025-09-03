@@ -1,0 +1,47 @@
+@baseUrl = http://localhost:3000
+@taskId = cd2c95a6-7f42-4b54-b1d1-46ad1b89fd41
+@userId = 8108eccd-84b4-4cbc-9beb-635f320ca9ba
+@token = 
+
+###
+# Task: Create
+# status allowed values: open, inProgress, finished, canceled
+POST {{baseUrl}}/task
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Initial Task",
+  "description": "Do something important",
+  "status": "open",
+  "creatorId": "{{userId}}",
+  "teamIds": [
+    "{{userId}}"
+  ]
+}
+
+###
+# Task: List all
+GET {{baseUrl}}/task
+Authorization: Bearer {{token}}
+
+###
+# Task: Get by ID
+GET {{baseUrl}}/task/{{taskId}}
+Authorization: Bearer {{token}}
+
+###
+# Task: Update (partial)
+PATCH {{baseUrl}}/task/{{taskId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Updated Task Title",
+  "status": "inProgress"
+}
+
+###
+# Task: Delete
+DELETE {{baseUrl}}/task/{{taskId}}
+Authorization: Bearer {{token}}

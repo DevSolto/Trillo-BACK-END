@@ -1,0 +1,149 @@
+@baseUrl = http://localhost:3000
+@token = 
+
+# Common variables (adjust as needed)
+@userId = 00000000-0000-0000-0000-000000000000
+@taskId = 00000000-0000-0000-0000-000000000000
+@associationId = 00000000-0000-0000-0000-000000000000
+@userEmail = user%40example.com
+@associationCnpj = 12345678000190
+
+###
+# Auth: Login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "StrongP@ssw0rd!"
+}
+
+
+
+###
+# User: Create
+POST {{baseUrl}}/user
+Content-Type: application/json
+
+{
+  "name": "Alice Example",
+  "email": "alice@example.com",
+  "password": "StrongP@ssw0rd!",
+  "role": "editor"
+}
+
+###
+# User: List all
+GET {{baseUrl}}/user
+Authorization: Bearer {{token}}
+
+###
+# User: Get by ID
+GET {{baseUrl}}/user/id/{{userId}}
+Authorization: Bearer {{token}}
+
+###
+# User: Get by email (URL-encoded '@')
+GET {{baseUrl}}/user/email/{{userEmail}}
+Authorization: Bearer {{token}}
+
+###
+# User: Update (partial)
+PATCH {{baseUrl}}/user/{{userId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Alice Updated",
+  "role": "admin"
+}
+
+###
+# User: Delete
+DELETE {{baseUrl}}/user/{{userId}}
+Authorization: Bearer {{token}}
+
+###
+# Task: Create
+POST {{baseUrl}}/task
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Initial Task",
+  "description": "Do something important",
+  "status": "open",
+  "creatorId": "{{userId}}",
+  "teamIds": [
+    "{{userId}}"
+  ]
+}
+
+###
+# Task: List all
+GET {{baseUrl}}/task
+Authorization: Bearer {{token}}
+
+###
+# Task: Get by ID
+GET {{baseUrl}}/task/{{taskId}}
+Authorization: Bearer {{token}}
+
+###
+# Task: Update (partial)
+PATCH {{baseUrl}}/task/{{taskId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Updated Task Title",
+  "status": "inProgress"
+}
+
+###
+# Task: Delete
+DELETE {{baseUrl}}/task/{{taskId}}
+Authorization: Bearer {{token}}
+
+###
+# Association: Create
+POST {{baseUrl}}/association
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Assoc Sample",
+  "cnpj": "12345678000190",
+  "status": true
+}
+
+###
+# Association: List all
+GET {{baseUrl}}/association
+Authorization: Bearer {{token}}
+
+###
+# Association: Get by ID
+GET {{baseUrl}}/association/id/{{associationId}}
+Authorization: Bearer {{token}}
+
+###
+# Association: Get by CNPJ (14 digits)
+GET {{baseUrl}}/association/cnpj/{{associationCnpj}}
+Authorization: Bearer {{token}}
+
+###
+# Association: Update (partial)
+PATCH {{baseUrl}}/association/{{associationId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Assoc Updated",
+  "status": false
+}
+
+###
+# Association: Delete
+DELETE {{baseUrl}}/association/{{associationId}}
+Authorization: Bearer {{token}}

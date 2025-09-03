@@ -1,0 +1,48 @@
+@baseUrl = http://localhost:3000
+@userId = e2cb6eea-730d-4369-9366-ba6e5ba4cf40
+@userEmail = alice@example.com
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsaWNlQGV4YW1wbGUuY29tIiwic3ViIjoiZTJjYjZlZWEtNzMwZC00MzY5LTkzNjYtYmE2ZTViYTRjZjQwIiwiaWF0IjoxNzU2ODgxNzYzLCJleHAiOjE3NTY4ODE4MjN9.dtY3lUS521LH5roGIsCPsuShKTKxWjQgN0kmRerUjTw
+
+###
+# User: Create
+# role allowed values: admin, editor
+POST {{baseUrl}}/user
+Content-Type: application/json
+
+{
+  "name": "Alice Example",
+  "email": "alice@example.com",
+  "password": "StrongP@ssw0rd!",
+  "role": "editor"
+}
+
+###
+# User: List all
+GET {{baseUrl}}/user
+Authorization: Bearer {{token}}
+
+###
+# User: Get by ID
+GET {{baseUrl}}/user/id/{{userId}}
+Authorization: Bearer {{token}}
+
+###
+# User: Get by email (email must be URL-encoded)
+GET {{baseUrl}}/user/email/{{userEmail}}
+Authorization: Bearer {{token}}
+
+###
+# User: Update (partial)
+PATCH {{baseUrl}}/user/{{userId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Alice Updated",
+  "role": "admin"
+}
+
+###
+# User: Delete
+DELETE {{baseUrl}}/user/{{userId}}
+Authorization: Bearer {{token}}

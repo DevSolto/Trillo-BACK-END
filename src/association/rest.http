@@ -1,0 +1,47 @@
+@baseUrl = http://localhost:3000
+@associationId = 00000000-0000-0000-0000-000000000000
+@associationCnpj = 12345678000190
+@token = 
+
+###
+# Association: Create
+POST {{baseUrl}}/association
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Assoc Sample",
+  "cnpj": "12345678000190",
+  "status": true
+}
+
+###
+# Association: List all
+GET {{baseUrl}}/association
+Authorization: Bearer {{token}}
+
+###
+# Association: Get by ID
+GET {{baseUrl}}/association/id/{{associationId}}
+Authorization: Bearer {{token}}
+
+###
+# Association: Get by CNPJ (14 digits or 00.000.000/0000-00)
+GET {{baseUrl}}/association/cnpj/{{associationCnpj}}
+Authorization: Bearer {{token}}
+
+###
+# Association: Update (partial)
+PATCH {{baseUrl}}/association/{{associationId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Assoc Updated",
+  "status": false
+}
+
+###
+# Association: Delete
+DELETE {{baseUrl}}/association/{{associationId}}
+Authorization: Bearer {{token}}
