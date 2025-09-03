@@ -1,10 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
 import { User } from 'src/user/entities/user.entity';
+import { QueryTaskDto } from './dto/query-task.dto';
 
 @Injectable()
 export class TaskService {
@@ -27,8 +28,26 @@ export class TaskService {
     return await this.repo.save(task)
   }
 
-  findAll() {
-    return this.repo.find({ relations: { creator: true, team: true } })
+  async findAll(query: QueryTaskDto = { page: 1, limit: 10 }) {
+    const { page = 1, limit = 10, title, status, creatorId, sortBy = 'id', sortOrder = 'ASC' } = query ?? {}
+    const take = Math.max(1, Math.min(limit ?? 10, 100))
+    const skip = Math.max(0, ((page ?? 1) - 1) * take)
+
+    const where: any = {}
+    if (title) where.title = Like(`%${title}%`)
+    if (typeof status !== 'undefined') where.status = status
+    if (typeof creatorId !== 'undefined') where.creator = { id: creatorId } as User
+
+    const [items, total] = await this.repo.findAndCount({
+      relations: { creator: true, team: true },
+      where,
+      order: { [sortBy]: (String(sortOrder).toUpperCase() as 'ASC' | 'DESC') ?? 'ASC' },
+      skip,
+      take,
+    })
+    const pageCount = Math.ceil(total / take) || 1
+
+    return { items, total, page: page ?? 1, limit: take, pageCount }
   }
 
   findOne(id: string) {

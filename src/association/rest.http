@@ -16,8 +16,9 @@ Content-Type: application/json
 }
 
 ###
-# Association: List all
-GET {{baseUrl}}/association
+# Association: List all (paginated + filters + order)
+# Params: page, limit, name, cnpj, status=true|false, sortBy=id|name|cnpj|status, sortOrder=ASC|DESC
+GET {{baseUrl}}/association?page=1&limit=10&name=Assoc&sortBy=name&sortOrder=ASC
 Authorization: Bearer {{token}}
 
 ###

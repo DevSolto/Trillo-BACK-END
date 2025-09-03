@@ -1,9 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Public } from 'src/auth/public.decorator';
+import { QueryUserDto } from './dto/query-user.dto';
 
+@ApiTags('user')
+@ApiBearerAuth('access-token')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) { }
@@ -15,8 +19,15 @@ export class UserController {
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  @ApiQuery({ name: 'name', required: false, type: String, description: 'Filtro por nome (contém)' })
+  @ApiQuery({ name: 'email', required: false, type: String, description: 'Filtro por e-mail (contém)' })
+  @ApiQuery({ name: 'role', required: false, enum: ['admin', 'editor'], description: 'Filtrar por papel' })
+  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Página atual', example: 1 })
+  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Itens por página', example: 10 })
+  @ApiQuery({ name: 'sortBy', required: false, enum: ['id', 'name', 'email', 'role'], description: 'Campo para ordenação' })
+  @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'], description: 'Direção da ordenação' })
+  findAll(@Query() query: QueryUserDto) {
+    return this.userService.findAll(query);
   }
 
   @Get('id/:id')

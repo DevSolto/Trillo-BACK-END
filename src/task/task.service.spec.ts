@@ -13,6 +13,7 @@ describe('TaskService', () => {
       create: jest.fn(),
       save: jest.fn(),
       find: jest.fn(),
+      findAndCount: jest.fn(),
       findOne: jest.fn(),
       delete: jest.fn(),
     }
@@ -52,11 +53,12 @@ describe('TaskService', () => {
     expect(result).toBe(saved)
   })
 
-  it('findAll returns tasks with relations', async () => {
+  it('findAll returns paginated tasks with relations', async () => {
     const rows = [{ id: 't1' } as Task]
-    repo.find.mockResolvedValue(rows as any)
-    await expect(service.findAll()).resolves.toBe(rows as any)
-    expect(repo.find).toHaveBeenCalledWith({ relations: { creator: true, team: true } })
+    repo.findAndCount!.mockResolvedValue([rows as any, 1] as any)
+    const result = await service.findAll()
+    expect(repo.findAndCount).toHaveBeenCalledWith({ relations: { creator: true, team: true }, where: {}, order: { id: 'ASC' }, skip: 0, take: 10 })
+    expect(result).toEqual({ items: rows, total: 1, page: 1, limit: 10, pageCount: 1 })
   })
 
   it('findOne queries by id with relations', async () => {

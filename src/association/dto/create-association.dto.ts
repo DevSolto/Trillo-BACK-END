@@ -1,11 +1,14 @@
 import { IsBoolean, IsDefined, IsNotEmpty, IsOptional, IsString, Matches } from 'class-validator'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 export class CreateAssociationDto {
+  @ApiProperty({ description: 'Nome da associação', example: 'Associação Bairro Feliz' })
   @IsString({ message: 'Nome deve ser uma string' })
   @IsDefined({ message: 'Nome é obrigatório' })
   @IsNotEmpty({ message: 'Nome não pode estar vazio' })
   name: string
 
+  @ApiProperty({ description: 'CNPJ da associação', example: '12.345.678/0001-90' })
   @IsString({ message: 'CNPJ deve ser uma string' })
   @IsDefined({ message: 'CNPJ é obrigatório' })
   @IsNotEmpty({ message: 'CNPJ não pode estar vazio' })
@@ -14,6 +17,7 @@ export class CreateAssociationDto {
   })
   cnpj: string
 
+  @ApiPropertyOptional({ description: 'Status ativo/inativo', example: true, default: true })
   @IsOptional()
   @IsBoolean({ message: 'Status deve ser booleano' })
   status?: boolean

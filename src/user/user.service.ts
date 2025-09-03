@@ -3,7 +3,9 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
+import { QueryUserDto } from './dto/query-user.dto';
 
 @Injectable()
 export class UserService {
@@ -17,8 +19,20 @@ export class UserService {
     return await this.repo.save(user)
   }
 
-  findAll() {
-    return this.repo.find()
+  async findAll(query: QueryUserDto = { page: 1, limit: 10 }) {
+    const { page = 1, limit = 10, name, email, role, sortBy = 'id', sortOrder = 'ASC' } = query ?? {}
+    const take = Math.max(1, Math.min(limit ?? 10, 100))
+    const skip = Math.max(0, ((page ?? 1) - 1) * take)
+
+    const where: any = {}
+    if (name) where.name = Like(`%${name}%`)
+    if (email) where.email = Like(`%${email}%`)
+    if (typeof role !== 'undefined') where.role = role
+
+    const [items, total] = await this.repo.findAndCount({ skip, take, where, order: { [sortBy]: (String(sortOrder).toUpperCase() as 'ASC' | 'DESC') ?? 'ASC' } })
+    const pageCount = Math.ceil(total / take) || 1
+
+    return { items, total, page: page ?? 1, limit: take, pageCount }
   }
 
   findOne(id: string) {

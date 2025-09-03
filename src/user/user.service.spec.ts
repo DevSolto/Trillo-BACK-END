@@ -13,6 +13,7 @@ describe('UserService', () => {
       create: jest.fn(),
       save: jest.fn(),
       find: jest.fn(),
+      findAndCount: jest.fn(),
       findOneBy: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
@@ -49,12 +50,13 @@ describe('UserService', () => {
   })
 
   describe('findAll', () => {
-    it('should return all users', async () => {
+    it('returns paginated users', async () => {
       const users = [{ id: '1' } as User]
-      repo.find.mockResolvedValue(users as any)
+      repo.findAndCount!.mockResolvedValue([users as any, 1] as any)
 
-      await expect(service.findAll()).resolves.toEqual(users)
-      expect(repo.find).toHaveBeenCalled()
+      const result = await service.findAll()
+      expect(repo.findAndCount).toHaveBeenCalledWith({ where: {}, order: { id: 'ASC' }, skip: 0, take: 10 })
+      expect(result).toEqual({ items: users, total: 1, page: 1, limit: 10, pageCount: 1 })
     })
   })
 
