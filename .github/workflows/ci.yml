@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: nest_db
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres" 
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Wait for Postgres
+        run: |
+          for i in {1..30}; do
+            nc -z 127.0.0.1 5433 && echo "Postgres is up" && break
+            echo "Waiting for Postgres..." && sleep 2
+          done
+
+      - name: Run unit tests
+        env:
+          DB_HOST: localhost
+          DB_PORT: '5433'
+          DB_USER: postgres
+          DB_PASS: postgres
+          DB_NAME: nest_db
+          JWT_SECRET: test-secret
+        run: pnpm test
+
+      - name: Run e2e tests
+        env:
+          DB_HOST: localhost
+          DB_PORT: '5433'
+          DB_USER: postgres
+          DB_PASS: postgres
+          DB_NAME: nest_db
+          JWT_SECRET: test-secret
+        run: pnpm test:e2e
+
