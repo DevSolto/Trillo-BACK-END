@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
-import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -17,6 +17,19 @@ export class TaskController {
   }
 
   @Get()
+  @ApiOkResponse({
+    description: 'Lista paginada de tarefas',
+    schema: {
+      type: 'object',
+      properties: {
+        items: { type: 'array', items: { type: 'object' } },
+        total: { type: 'number' },
+        page: { type: 'number' },
+        limit: { type: 'number' },
+        pageCount: { type: 'number' },
+      },
+    },
+  })
   @ApiQuery({ name: 'title', required: false, type: String, description: 'Filtro por título (contém)' })
   @ApiQuery({ name: 'status', required: false, enum: ['open', 'inProgress', 'finished', 'canceled'], description: 'Filtrar por status' })
   @ApiQuery({ name: 'creatorId', required: false, type: String, description: 'Filtrar por criador (UUID)' })

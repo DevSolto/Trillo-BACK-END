@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ###
-# User: List all
+# User: List all (paginated object: { items, total, page, limit, pageCount })
 GET {{baseUrl}}/user
 Authorization: Bearer {{token}}
 

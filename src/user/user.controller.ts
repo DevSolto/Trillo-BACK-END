@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
-import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -19,6 +19,19 @@ export class UserController {
   }
 
   @Get()
+  @ApiOkResponse({
+    description: 'Lista paginada de usuários',
+    schema: {
+      type: 'object',
+      properties: {
+        items: { type: 'array', items: { type: 'object' } },
+        total: { type: 'number' },
+        page: { type: 'number' },
+        limit: { type: 'number' },
+        pageCount: { type: 'number' },
+      },
+    },
+  })
   @ApiQuery({ name: 'name', required: false, type: String, description: 'Filtro por nome (contém)' })
   @ApiQuery({ name: 'email', required: false, type: String, description: 'Filtro por e-mail (contém)' })
   @ApiQuery({ name: 'role', required: false, enum: ['admin', 'editor'], description: 'Filtrar por papel' })

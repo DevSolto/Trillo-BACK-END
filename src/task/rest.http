@@ -21,7 +21,7 @@ Content-Type: application/json
 }
 
 ###
-# Task: List all
+# Task: List all (paginated object: { items, total, page, limit, pageCount })
 GET {{baseUrl}}/task
 Authorization: Bearer {{token}}
 

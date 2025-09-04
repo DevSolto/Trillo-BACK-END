@@ -50,8 +50,10 @@ describe('User CRUD (e2e)', () => {
 
     // Snapshot initial count to ensure no residue
     const initialListRes = await request(server).get('/user').expect(200);
-    const initialCount: number = Array.isArray(initialListRes.body)
-      ? initialListRes.body.length
+    expect(initialListRes.body).toHaveProperty('items');
+    expect(initialListRes.body).toHaveProperty('total');
+    const initialCount: number = Array.isArray(initialListRes.body.items)
+      ? initialListRes.body.items.length
       : 0;
 
     const createPayload = {
@@ -109,8 +111,9 @@ describe('User CRUD (e2e)', () => {
     const listRes = await request(server)
       .get('/user')
       .expect(200);
-    expect(Array.isArray(listRes.body)).toBe(true);
-    const ids: string[] = listRes.body.map((u: any) => u.id);
+    expect(listRes.body).toHaveProperty('items');
+    expect(Array.isArray(listRes.body.items)).toBe(true);
+    const ids: string[] = listRes.body.items.map((u: any) => u.id);
     expect(ids).not.toContain(id);
   });
 });

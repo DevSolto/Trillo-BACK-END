@@ -98,7 +98,11 @@ describe('Task (e2e) - CRUD com relações', () => {
 
     // GET all deve conter a task criada
     const all = await request(server).get('/task').expect(200)
-    const ids = (Array.isArray(all.body) ? all.body : []).map((t: any) => t.id)
+    expect(all.body).toHaveProperty('items')
+    expect(all.body).toHaveProperty('total')
+    expect(all.body).toHaveProperty('page')
+    expect(all.body).toHaveProperty('limit')
+    const ids = (Array.isArray(all.body.items) ? all.body.items : []).map((t: any) => t.id)
     expect(ids).toContain(taskId)
 
     // GET by id
@@ -162,4 +166,3 @@ describe('Task (e2e) - CRUD com relações', () => {
     expect(del.body).toHaveProperty('affected', 1)
   })
 })
-
