@@ -4,8 +4,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Like, Repository } from 'typeorm';
-import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { QueryUserDto } from './dto/query-user.dto';
+import * as bcrypt from 'bcryptjs'
 
 @Injectable()
 export class UserService {
@@ -15,7 +15,9 @@ export class UserService {
   ) { }
 
   async create(createUserDto: CreateUserDto) {
-    const user = this.repo.create(createUserDto)
+    const { password, ...rest } = createUserDto
+    const hashed = await bcrypt.hash(password, 10)
+    const user = this.repo.create({ ...rest, password: hashed })
     return await this.repo.save(user)
   }
 
@@ -47,12 +49,17 @@ export class UserService {
     })
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const payload: any = { ...updateUserDto }
+    if (typeof updateUserDto.password !== 'undefined') {
+      payload.password = await bcrypt.hash(updateUserDto.password, 10)
+    }
     return this.repo.update(
       {
-        id
+        id,
       },
-      updateUserDto)
+      payload,
+    )
   }
 
   remove(id: string) {
