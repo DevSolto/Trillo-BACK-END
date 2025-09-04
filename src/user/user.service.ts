@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -15,10 +15,21 @@ export class UserService {
   ) { }
 
   async create(createUserDto: CreateUserDto) {
-    const { password, ...rest } = createUserDto
-    const hashed = await bcrypt.hash(password, 10)
-    const user = this.repo.create({ ...rest, password: hashed })
-    return await this.repo.save(user)
+    try {
+      const { password, ...rest } = createUserDto
+      const hashed = await bcrypt.hash(password, 10)
+      const user = this.repo.create({ ...rest, password: hashed })
+      const saved = await this.repo.save(user)
+      // Evita vazar senha no retorno
+      // @ts-expect-error
+      delete (saved as any).password
+      return saved
+    } catch (err: any) {
+      if (err?.code === '23505') {
+        throw new ConflictException('E-mail já em uso')
+      }
+      throw err
+    }
   }
 
   async findAll(query: QueryUserDto = { page: 1, limit: 10 }) {
@@ -37,29 +48,36 @@ export class UserService {
     return { items, total, page: page ?? 1, limit: take, pageCount }
   }
 
-  findOne(id: string) {
-    return this.repo.findOneBy({
-      id
-    })
+  async findOne(id: string) {
+    const user = await this.repo.findOne({ where: { id } })
+    if (!user) throw new NotFoundException('Usuário não encontrado')
+    return user
   }
 
-  findOneByEmail(email: string) {
-    return this.repo.findOneBy({
-      email
-    })
+  async findOneByEmail(email: string) {
+    const user = await this.repo.findOne({ where: { email } })
+    if (!user) throw new NotFoundException('Usuário não encontrado')
+    return user
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    const payload: any = { ...updateUserDto }
-    if (typeof updateUserDto.password !== 'undefined') {
-      payload.password = await bcrypt.hash(updateUserDto.password, 10)
+    try {
+      const payload: any = { ...updateUserDto }
+      if (typeof updateUserDto.password !== 'undefined') {
+        payload.password = await bcrypt.hash(updateUserDto.password, 10)
+      }
+      return await this.repo.update(
+        {
+          id,
+        },
+        payload,
+      )
+    } catch (err: any) {
+      if (err?.code === '23505') {
+        throw new ConflictException('E-mail já em uso')
+      }
+      throw err
     }
-    return this.repo.update(
-      {
-        id,
-      },
-      payload,
-    )
   }
 
   remove(id: string) {

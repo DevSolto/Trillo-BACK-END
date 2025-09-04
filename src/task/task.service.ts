@@ -50,8 +50,10 @@ export class TaskService {
     return { items, total, page: page ?? 1, limit: take, pageCount }
   }
 
-  findOne(id: string) {
-    return this.repo.findOne({ where: { id }, relations: { creator: true, team: true } })
+  async findOne(id: string) {
+    const task = await this.repo.findOne({ where: { id }, relations: { creator: true, team: true } })
+    if (!task) throw new NotFoundException('Task not found')
+    return task
   }
 
   async update(id: string, updateTaskDto: UpdateTaskDto) {

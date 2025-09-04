@@ -23,7 +23,8 @@ export class User {
     email: string
 
     @Column({
-        type: "varchar"
+        type: "varchar",
+        select: false
     })
     password: string
 
