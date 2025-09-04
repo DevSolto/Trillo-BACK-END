@@ -37,15 +37,27 @@ describe('UserService', () => {
   describe('create', () => {
     it('should persist and return the user', async () => {
       const dto = { name: 'Alice', email: 'a@a.com', password: 'Secret123!', role: 'editor' } as any
-      const entity = { id: 'u1', ...dto }
-      repo.create.mockReturnValue(dto as any)
-      repo.save.mockResolvedValue(entity as any)
+      const savedEntity = { id: 'u1', name: dto.name, email: dto.email, role: dto.role } as any
+      repo.create.mockImplementation((arg: any) => arg)
+      repo.save.mockResolvedValue({ ...savedEntity, password: 'hashed' } as any)
 
       const result = await service.create(dto)
 
-      expect(repo.create).toHaveBeenCalledWith(dto)
-      expect(repo.save).toHaveBeenCalledWith(dto)
-      expect(result).toEqual(entity)
+      // password deve ser hasheada antes do save
+      expect(repo.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          name: dto.name,
+          email: dto.email,
+          role: dto.role,
+          password: expect.any(String),
+        }),
+      )
+      const createdArgs = repo.create.mock.calls[0][0]
+      expect(createdArgs.password).not.toBe(dto.password)
+
+      expect(repo.save).toHaveBeenCalled()
+      // retorno não deve conter password
+      expect(result).toEqual(savedEntity)
     })
   })
 
@@ -61,25 +73,29 @@ describe('UserService', () => {
   })
 
   describe('findOne', () => {
-    it('should query by id', async () => {
+    it('should query by id and return entity', async () => {
       const user = { id: 'u1' } as User
-      repo.findOneBy.mockResolvedValue(user as any)
+      // @ts-ignore
+      repo.findOne = jest.fn().mockResolvedValue(user)
 
       const result = await service.findOne('u1')
 
-      expect(repo.findOneBy).toHaveBeenCalledWith({ id: 'u1' })
+      // @ts-ignore
+      expect(repo.findOne).toHaveBeenCalledWith({ where: { id: 'u1' } })
       expect(result).toBe(user)
     })
   })
 
   describe('findOneByEmail', () => {
-    it('should query by email', async () => {
+    it('should query by email and return entity', async () => {
       const user = { id: 'u1', email: 'a@a.com' } as User
-      repo.findOneBy.mockResolvedValue(user as any)
+      // @ts-ignore
+      repo.findOne = jest.fn().mockResolvedValue(user)
 
       const result = await service.findOneByEmail('a@a.com')
 
-      expect(repo.findOneBy).toHaveBeenCalledWith({ email: 'a@a.com' })
+      // @ts-ignore
+      expect(repo.findOne).toHaveBeenCalledWith({ where: { email: 'a@a.com' } })
       expect(result).toBe(user)
     })
   })
