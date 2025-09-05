@@ -1,12 +1,8 @@
 @baseUrl = http://localhost:3000
-@token = 
 
 ###
-# Auth: Login
-POST {{baseUrl}}/auth/login
-Content-Type: application/json
-
-{
-  "email": "alice@example.com",
-  "password": "StrongP@ssw0rd!"
-}
+# Auth local desativado. Use Supabase Auth para obter um JWT
+# e envie nas requisições como Bearer token.
+# Exemplo (cliente supabase-js no frontend):
+# const { data: { session } } = await supabase.auth.signInWithPassword({ email, password })
+# fetch('/user', { headers: { Authorization: `Bearer ${session.access_token}` } })

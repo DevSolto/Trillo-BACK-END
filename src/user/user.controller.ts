@@ -1,10 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Req, UnauthorizedException } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Public } from 'src/auth/public.decorator';
 import { QueryUserDto } from './dto/query-user.dto';
+import type { Request } from 'express';
 
 @ApiTags('user')
 @ApiBearerAuth('access-token')
@@ -12,10 +12,15 @@ import { QueryUserDto } from './dto/query-user.dto';
 export class UserController {
   constructor(private readonly userService: UserService) { }
 
-  @Public()
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  create(@Req() req: Request, @Body() createUserDto: CreateUserDto) {
+    const { user } = req as any;
+    const userId: string = user?.userId;
+    const userEmail: string = user?.userEmail ?? createUserDto.email;
+    if (!userId) {
+      throw new UnauthorizedException('Token inválido ou ausente');
+    }
+    return this.userService.create(userId, userEmail, createUserDto);
   }
 
   @Get()

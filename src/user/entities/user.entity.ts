@@ -1,5 +1,5 @@
 import { Task } from "src/task/entities/task.entity";
-import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToMany, OneToMany, PrimaryColumn } from "typeorm";
 
 export enum UserRole {
     ADMIN = "admin",
@@ -8,7 +8,7 @@ export enum UserRole {
 
 @Entity("user")
 export class User {
-    @PrimaryGeneratedColumn("uuid")
+    @PrimaryColumn("uuid")
     id: string
 
     @Column({
@@ -21,12 +21,6 @@ export class User {
         unique: true
     })
     email: string
-
-    @Column({
-        type: "varchar",
-        select: false
-    })
-    password: string
 
     @Column({
         type: "enum",

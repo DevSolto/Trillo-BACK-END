@@ -5,7 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Like, Repository } from 'typeorm';
 import { QueryUserDto } from './dto/query-user.dto';
-import * as bcrypt from 'bcryptjs'
 
 @Injectable()
 export class UserService {
@@ -14,15 +13,15 @@ export class UserService {
     private readonly repo: Repository<User>,
   ) { }
 
-  async create(createUserDto: CreateUserDto) {
+  async create(userId: string, email: string, createUserDto: CreateUserDto) {
     try {
-      const { password, ...rest } = createUserDto
-      const hashed = await bcrypt.hash(password, 10)
-      const user = this.repo.create({ ...rest, password: hashed })
+      const user = this.repo.create({
+        id: userId,
+        email,
+        name: createUserDto.name,
+        role: createUserDto.role,
+      })
       const saved = await this.repo.save(user)
-      // Evita vazar senha no retorno
-      // @ts-expect-error
-      delete (saved as any).password
       return saved
     } catch (err: any) {
       if (err?.code === '23505') {
@@ -63,9 +62,6 @@ export class UserService {
   async update(id: string, updateUserDto: UpdateUserDto) {
     try {
       const payload: any = { ...updateUserDto }
-      if (typeof updateUserDto.password !== 'undefined') {
-        payload.password = await bcrypt.hash(updateUserDto.password, 10)
-      }
       return await this.repo.update(
         {
           id,

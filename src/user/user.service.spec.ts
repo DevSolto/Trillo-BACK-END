@@ -35,28 +35,26 @@ describe('UserService', () => {
   })
 
   describe('create', () => {
-    it('should persist and return the user', async () => {
-      const dto = { name: 'Alice', email: 'a@a.com', password: 'Secret123!', role: 'editor' } as any
-      const savedEntity = { id: 'u1', name: dto.name, email: dto.email, role: dto.role } as any
+    it('should persist and return the user using provided id and email', async () => {
+      const dto = { name: 'Alice', role: 'editor' } as any
+      const userId = 'u1'
+      const email = 'a@a.com'
+      const savedEntity = { id: userId, name: dto.name, email, role: dto.role } as any
       repo.create.mockImplementation((arg: any) => arg)
-      repo.save.mockResolvedValue({ ...savedEntity, password: 'hashed' } as any)
+      repo.save.mockResolvedValue(savedEntity as any)
 
-      const result = await service.create(dto)
+      const result = await service.create(userId, email, dto)
 
-      // password deve ser hasheada antes do save
       expect(repo.create).toHaveBeenCalledWith(
         expect.objectContaining({
+          id: userId,
           name: dto.name,
-          email: dto.email,
+          email,
           role: dto.role,
-          password: expect.any(String),
         }),
       )
-      const createdArgs = repo.create.mock.calls[0][0]
-      expect(createdArgs.password).not.toBe(dto.password)
 
       expect(repo.save).toHaveBeenCalled()
-      // retorno não deve conter password
       expect(result).toEqual(savedEntity)
     })
   })

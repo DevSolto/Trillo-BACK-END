@@ -30,13 +30,14 @@ describe('UserController', () => {
   })
 
   it('create should delegate to service', async () => {
-    const dto: any = { name: 'A', email: 'a@a.com', password: 'Secret123!' }
+    const dto: any = { name: 'A', email: 'a@a.com', role: 'editor' }
     const user = { id: '1', ...dto }
     service.create.mockResolvedValue(user as any)
 
-    const result = await controller.create(dto)
+    const req: any = { user: { userId: '1', userEmail: dto.email } }
+    const result = await controller.create(req, dto)
 
-    expect(service.create).toHaveBeenCalledWith(dto)
+    expect(service.create).toHaveBeenCalledWith('1', dto.email, dto)
     expect(result).toEqual(user)
   })
 

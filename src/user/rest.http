@@ -7,12 +7,12 @@
 # User: Create
 # role allowed values: admin, editor
 POST {{baseUrl}}/user
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "name": "Alice Example",
   "email": "alice@example.com",
-  "password": "StrongP@ssw0rd!",
   "role": "editor"
 }
 
