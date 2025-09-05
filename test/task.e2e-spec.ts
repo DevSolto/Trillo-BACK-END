@@ -1,6 +1,7 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common'
 import { Test, TestingModule } from '@nestjs/testing'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { randomUUID } from 'crypto'
 import request from 'supertest'
 import { TaskModule } from '../src/task/task.module'
 import { Task } from '../src/task/entities/task.entity'
@@ -26,6 +27,7 @@ describe('Task (e2e) - CRUD com relações', () => {
           database: process.env.DB_NAME || 'nest_db',
           entities: [User, Task],
           synchronize: true,
+          dropSchema: true,
         }),
         UserModule,
         TaskModule,
@@ -33,6 +35,14 @@ describe('Task (e2e) - CRUD com relações', () => {
     }).compile()
 
     app = moduleFixture.createNestApplication()
+    // Injeta req.user para compatibilizar com o novo fluxo (sem JWT no teste)
+    app.use((req: any, _res: any, next: any) => {
+      if (req.method === 'POST' && req.path.startsWith('/user')) {
+        const email = req.body?.email ?? `user_${Date.now()}@example.com`
+        req.user = { userId: randomUUID(), userEmail: email }
+      }
+      next()
+    })
     app.useGlobalPipes(
       new ValidationPipe({
         whitelist: true,
@@ -61,15 +71,15 @@ describe('Task (e2e) - CRUD com relações', () => {
     // Cria usuários para criador e time
     const creatorRes = await request(server)
       .post('/user')
-      .send({ name: 'Creator', email: genEmail(), password: 'Password@123', role: 'editor' })
+      .send({ name: 'Creator', email: genEmail(), role: 'editor' })
       .expect(201)
     const team1Res = await request(server)
       .post('/user')
-      .send({ name: 'Team1', email: genEmail(), password: 'Password@123', role: 'editor' })
+      .send({ name: 'Team1', email: genEmail(), role: 'editor' })
       .expect(201)
     const team2Res = await request(server)
       .post('/user')
-      .send({ name: 'Team2', email: genEmail(), password: 'Password@123', role: 'editor' })
+      .send({ name: 'Team2', email: genEmail(), role: 'editor' })
       .expect(201)
 
     const creatorId: string = creatorRes.body.id
@@ -117,15 +127,15 @@ describe('Task (e2e) - CRUD com relações', () => {
     // Usuários auxiliares
     const creatorRes = await request(server)
       .post('/user')
-      .send({ name: 'Creator2', email: genEmail(), password: 'Password@123', role: 'editor' })
+      .send({ name: 'Creator2', email: genEmail(), role: 'editor' })
       .expect(201)
     const teamARes = await request(server)
       .post('/user')
-      .send({ name: 'TeamA', email: genEmail(), password: 'Password@123', role: 'editor' })
+      .send({ name: 'TeamA', email: genEmail(), role: 'editor' })
       .expect(201)
     const teamBRes = await request(server)
       .post('/user')
-      .send({ name: 'TeamB', email: genEmail(), password: 'Password@123', role: 'editor' })
+      .send({ name: 'TeamB', email: genEmail(), role: 'editor' })
       .expect(201)
 
     // Cria task base

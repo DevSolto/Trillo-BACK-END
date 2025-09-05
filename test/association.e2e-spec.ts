@@ -23,6 +23,7 @@ describe('Association (e2e) - entidade atual e DTOs', () => {
           database: process.env.DB_NAME || 'nest_db',
           entities: [Association],
           synchronize: true,
+          dropSchema: true,
         }),
         AssociationModule,
       ],

@@ -1,6 +1,7 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { randomUUID } from 'crypto';
 import request from 'supertest';
 import { UserModule } from '../src/user/user.module';
 import { User } from '../src/user/entities/user.entity';
@@ -23,12 +24,21 @@ describe('User CRUD (e2e)', () => {
           database: process.env.DB_NAME || 'nest_db',
           entities: [User, Task],
           synchronize: true,
+          dropSchema: true,
         }),
         UserModule,
       ],
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    // Injeta req.user para compatibilizar com o novo fluxo (sem JWT no teste)
+    app.use((req: any, _res: any, next: any) => {
+      if (req.method === 'POST' && req.path.startsWith('/user')) {
+        const email = req.body?.email ?? `user_${Date.now()}@example.com`;
+        req.user = { userId: randomUUID(), userEmail: email };
+      }
+      next();
+    });
     app.useGlobalPipes(
       new ValidationPipe({
         whitelist: true,
@@ -59,7 +69,6 @@ describe('User CRUD (e2e)', () => {
     const createPayload = {
       name: 'Alice Test',
       email: `alice_${Date.now()}@example.com`,
-      password: 'Password@123',
       role: 'editor',
     };
 
