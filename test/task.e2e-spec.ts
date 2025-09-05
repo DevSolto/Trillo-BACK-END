@@ -38,8 +38,7 @@ describe('Task (e2e) - CRUD com relações', () => {
     // Injeta req.user para compatibilizar com o novo fluxo (sem JWT no teste)
     app.use((req: any, _res: any, next: any) => {
       if (req.method === 'POST' && req.path.startsWith('/user')) {
-        const email = req.body?.email ?? `user_${Date.now()}@example.com`
-        req.user = { userId: randomUUID(), userEmail: email }
+        req.user = { userId: randomUUID() }
       }
       next()
     })
