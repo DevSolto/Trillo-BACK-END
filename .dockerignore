@@ -1,0 +1,14 @@
+# Exclude unnecessary files from the Docker build context
+node_modules
+dist
+.git
+.github
+.vscode
+coverage
+test
+*.log
+.env
+*.local
+README.md
+rest.http
+TECH-DEBT.md
