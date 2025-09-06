@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { randomUUID } from 'crypto';
 import request from 'supertest';
+import { AllExceptionsFilter } from '../src/common/filters/all-exceptions.filter';
 import { UserModule } from '../src/user/user.module';
 import { User } from '../src/user/entities/user.entity';
 import { Task } from '../src/task/entities/task.entity';
@@ -47,6 +48,7 @@ describe('User CRUD (e2e)', () => {
         transform: true,
       }),
     );
+    app.useGlobalFilters(new AllExceptionsFilter());
     await app.init();
   });
 
@@ -123,5 +125,25 @@ describe('User CRUD (e2e)', () => {
     expect(Array.isArray(listRes.body.items)).toBe(true);
     const ids: string[] = listRes.body.items.map((u: any) => u.id);
     expect(ids).not.toContain(id);
+
+    // GET by id after delete -> 404 with standardized payload
+    const byIdAfterDel = await request(server)
+      .get(`/user/id/${id}`)
+      .expect(404);
+    expect(byIdAfterDel.body).toMatchObject({
+      statusCode: 404,
+      code: 'NOT_FOUND',
+      message: 'Usuário não encontrado',
+    });
+
+    // GET by email after delete -> 404 with standardized payload
+    const byEmailAfterDel = await request(server)
+      .get(`/user/email/${encodeURIComponent(createPayload.email)}`)
+      .expect(404);
+    expect(byEmailAfterDel.body).toMatchObject({
+      statusCode: 404,
+      code: 'NOT_FOUND',
+      message: 'Usuário não encontrado',
+    });
   });
 });

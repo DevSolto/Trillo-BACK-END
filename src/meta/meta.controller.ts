@@ -1,5 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ErrorResponseDto } from 'src/common/dto/error-response.dto';
 import { TaskStatus } from 'src/task/entities/task.entity';
 import { UserRole } from 'src/user/entities/user.entity';
 
@@ -8,6 +9,7 @@ import { UserRole } from 'src/user/entities/user.entity';
 @Controller('meta')
 export class MetaController {
   @Get('enums/user-roles')
+  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
   @ApiOkResponse({
     description: 'Lista de valores do enum UserRole',
     schema: { type: 'array', items: { type: 'string', enum: Object.values(UserRole) } },
@@ -17,6 +19,7 @@ export class MetaController {
   }
 
   @Get('enums/task-status')
+  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
   @ApiOkResponse({
     description: 'Lista de valores do enum TaskStatus',
     schema: { type: 'array', items: { type: 'string', enum: Object.values(TaskStatus) } },
@@ -26,6 +29,7 @@ export class MetaController {
   }
 
   @Get('enums')
+  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
   @ApiOkResponse({
     description: 'Objeto com listas dos enums usados nos selects',
     schema: {
@@ -43,4 +47,3 @@ export class MetaController {
     };
   }
 }
-

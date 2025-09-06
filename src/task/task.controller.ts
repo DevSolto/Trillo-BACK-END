@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
-import { ApiBearerAuth, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiNotFoundResponse, ApiOkResponse, ApiQuery, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ErrorResponseDto, ValidationErrorResponseDto } from 'src/common/dto/error-response.dto';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -12,11 +13,15 @@ export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
   @Post()
+  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
+  @ApiBadRequestResponse({ description: 'Dados inválidos', type: ValidationErrorResponseDto })
   create(@Body() createTaskDto: CreateTaskDto) {
     return this.taskService.create(createTaskDto);
   }
 
   @Get()
+  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
+  @ApiBadRequestResponse({ description: 'Parâmetros de consulta inválidos', type: ValidationErrorResponseDto })
   @ApiOkResponse({
     description: 'Lista paginada de tarefas',
     schema: {
@@ -42,16 +47,22 @@ export class TaskController {
   }
 
   @Get(':id')
+  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
+  @ApiNotFoundResponse({ description: 'Tarefa não encontrada', type: ErrorResponseDto })
   findOne(@Param('id') id: string) {
     return this.taskService.findOne(id);
   }
 
   @Patch(':id')
+  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
+  @ApiBadRequestResponse({ description: 'Dados inválidos', type: ValidationErrorResponseDto })
+  @ApiNotFoundResponse({ description: 'Tarefa não encontrada', type: ErrorResponseDto })
   update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
     return this.taskService.update(id, updateTaskDto);
   }
 
   @Delete(':id')
+  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
   remove(@Param('id') id: string) {
     return this.taskService.remove(id);
   }

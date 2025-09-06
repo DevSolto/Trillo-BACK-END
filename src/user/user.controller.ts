@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Req, UnauthorizedException } from '@nestjs/common';
-import { ApiBearerAuth, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiConflictResponse, ApiNotFoundResponse, ApiOkResponse, ApiQuery, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ErrorResponseDto, ValidationErrorResponseDto } from 'src/common/dto/error-response.dto';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -13,6 +14,9 @@ export class UserController {
   constructor(private readonly userService: UserService) { }
 
   @Post()
+  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
+  @ApiBadRequestResponse({ description: 'Dados inválidos', type: ValidationErrorResponseDto })
+  @ApiConflictResponse({ description: 'E-mail já em uso', type: ErrorResponseDto })
   create(@Req() req: Request, @Body() createUserDto: CreateUserDto) {
     const { user } = req as any;
     const userId: string = user?.userId;
@@ -24,6 +28,8 @@ export class UserController {
   }
 
   @Get()
+  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
+  @ApiBadRequestResponse({ description: 'Parâmetros de consulta inválidos', type: ValidationErrorResponseDto })
   @ApiOkResponse({
     description: 'Lista paginada de usuários',
     schema: {
@@ -49,21 +55,31 @@ export class UserController {
   }
 
   @Get('id/:id')
+  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
+  @ApiNotFoundResponse({ description: 'Usuário não encontrado', type: ErrorResponseDto })
   findOneById(@Param('id') id: string) {
     return this.userService.findOne(id);
   }
 
   @Get('email/:email')
+  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
+  @ApiNotFoundResponse({ description: 'Usuário não encontrado', type: ErrorResponseDto })
   findOneByEmail(@Param('email') email: string) {
     return this.userService.findOneByEmail(email);
   }
 
   @Patch(':id')
+  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
+  @ApiBadRequestResponse({ description: 'Dados inválidos', type: ValidationErrorResponseDto })
+  @ApiNotFoundResponse({ description: 'Usuário não encontrado', type: ErrorResponseDto })
+  @ApiConflictResponse({ description: 'E-mail já em uso', type: ErrorResponseDto })
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
+  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
+  @ApiNotFoundResponse({ description: 'Usuário não encontrado', type: ErrorResponseDto })
   remove(@Param('id') id: string) {
     return this.userService.remove(id);
   }

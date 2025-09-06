@@ -2,6 +2,7 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import request from 'supertest';
+import { AllExceptionsFilter } from '../src/common/filters/all-exceptions.filter';
 import { AssociationModule } from '../src/association/association.module';
 import { Association } from '../src/association/entities/association.entity';
 
@@ -39,6 +40,7 @@ describe('Association (e2e) - entidade atual e DTOs', () => {
         transform: true,
       }),
     );
+    app.useGlobalFilters(new AllExceptionsFilter());
     await app.init();
   });
 
@@ -107,9 +109,12 @@ describe('Association (e2e) - entidade atual e DTOs', () => {
     const del = await request(server).delete(`/association/${id}`).expect(200);
     expect(del.body.affected ?? 1).toBe(1);
 
-    // Após remover, GET não deve retornar o registro (null ou objeto vazio)
-    const afterDel = await request(server).get(`/association/id/${id}`).expect(200);
-    const body = afterDel.body;
-    expect((body && body.id) ?? null).toBeNull();
+    // Após remover, GET deve retornar 404 com payload de erro padronizado
+    const afterDel = await request(server).get(`/association/id/${id}`).expect(404);
+    expect(afterDel.body).toMatchObject({
+      statusCode: 404,
+      code: 'NOT_FOUND',
+      message: 'Associação não encontrada',
+    })
   });
 });

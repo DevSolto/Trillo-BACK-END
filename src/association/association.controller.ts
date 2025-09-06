@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
-import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiNotFoundResponse, ApiQuery, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ErrorResponseDto, ValidationErrorResponseDto } from 'src/common/dto/error-response.dto';
 import { AssociationService } from './association.service';
 import { CreateAssociationDto } from './dto/create-association.dto';
 import { UpdateAssociationDto } from './dto/update-association.dto';
@@ -12,11 +13,15 @@ export class AssociationController {
   constructor(private readonly associationService: AssociationService) {}
 
   @Post()
+  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
+  @ApiBadRequestResponse({ description: 'Dados inválidos', type: ValidationErrorResponseDto })
   create(@Body() createAssociationDto: CreateAssociationDto) {
     return this.associationService.create(createAssociationDto);
   }
 
   @Get()
+  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
+  @ApiBadRequestResponse({ description: 'Parâmetros de consulta inválidos', type: ValidationErrorResponseDto })
   @ApiQuery({ name: 'name', required: false, type: String, description: 'Filtro por nome (contém)' })
   @ApiQuery({ name: 'cnpj', required: false, type: String, description: 'Filtro por CNPJ (contém)' })
   @ApiQuery({ name: 'status', required: false, type: Boolean, description: 'Filtrar por status' })
@@ -29,21 +34,28 @@ export class AssociationController {
   }
 
   @Get('id/:id')
+  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
+  @ApiNotFoundResponse({ description: 'Associação não encontrada', type: ErrorResponseDto })
   findOneById(@Param('id') id: string) {
     return this.associationService.findOneById(id);
   }
 
   @Get('cnpj/:cnpj')
+  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
+  @ApiNotFoundResponse({ description: 'Associação não encontrada', type: ErrorResponseDto })
   findOneCnpj(@Param('cnpj') cnpj: string) {
     return this.associationService.findOneByCnpj(cnpj);
   }
 
   @Patch(':id')
+  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
+  @ApiBadRequestResponse({ description: 'Dados inválidos', type: ValidationErrorResponseDto })
   update(@Param('id') id: string, @Body() updateAssociationDto: UpdateAssociationDto) {
     return this.associationService.update(id, updateAssociationDto);
   }
 
   @Delete(':id')
+  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
   remove(@Param('id') id: string) {
     return this.associationService.remove(id);
   }
