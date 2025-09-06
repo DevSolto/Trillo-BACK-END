@@ -2,6 +2,7 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import request from 'supertest';
+import { AllExceptionsFilter } from '../src/common/filters/all-exceptions.filter';
 import { AssociationModule } from '../src/association/association.module';
 import { Association } from '../src/association/entities/association.entity';
 
@@ -39,6 +40,7 @@ describe('Association (e2e) - entidade atual e DTOs', () => {
         transform: true,
       }),
     );
+    app.useGlobalFilters(new AllExceptionsFilter());
     await app.init();
   });
 

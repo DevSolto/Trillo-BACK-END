@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { randomUUID } from 'crypto'
 import request from 'supertest'
+import { AllExceptionsFilter } from '../src/common/filters/all-exceptions.filter'
 import { TaskModule } from '../src/task/task.module'
 import { Task } from '../src/task/entities/task.entity'
 import { UserModule } from '../src/user/user.module'
@@ -51,6 +52,7 @@ describe('Task (e2e) - CRUD com relações', () => {
         transform: true,
       }),
     )
+    app.useGlobalFilters(new AllExceptionsFilter())
     await app.init()
   })
 
@@ -62,10 +64,16 @@ describe('Task (e2e) - CRUD com relações', () => {
     const server = app.getHttpServer()
 
     // Faltando campos obrigatórios
-    await request(server)
+    const badReq = await request(server)
       .post('/task')
       .send({ title: 'Sem campos' })
       .expect(400)
+    expect(badReq.body).toMatchObject({
+      statusCode: 400,
+      code: 'VALIDATION_ERROR',
+      message: 'Erro de validação',
+    })
+    expect(Array.isArray(badReq.body.details)).toBe(true)
 
     // Cria usuários para criador e time
     const creatorRes = await request(server)
@@ -173,5 +181,13 @@ describe('Task (e2e) - CRUD com relações', () => {
     // Remove
     const del = await request(server).delete(`/task/${taskId}`).expect(200)
     expect(del.body).toHaveProperty('affected', 1)
+
+    // GET after delete -> 404 payload
+    const afterDel = await request(server).get(`/task/${taskId}`).expect(404)
+    expect(afterDel.body).toMatchObject({
+      statusCode: 404,
+      code: 'NOT_FOUND',
+      message: 'Tarefa não encontrada',
+    })
   })
 })
