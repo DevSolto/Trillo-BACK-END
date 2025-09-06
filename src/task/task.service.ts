@@ -52,13 +52,13 @@ export class TaskService {
 
   async findOne(id: string) {
     const task = await this.repo.findOne({ where: { id }, relations: { creator: true, team: true } })
-    if (!task) throw new NotFoundException('Task not found')
+    if (!task) throw new NotFoundException('Tarefa não encontrada')
     return task
   }
 
   async update(id: string, updateTaskDto: UpdateTaskDto) {
     const task = await this.repo.findOne({ where: { id }, relations: { team: true, creator: true } })
-    if (!task) throw new NotFoundException('Task not found')
+    if (!task) throw new NotFoundException('Tarefa não encontrada')
 
     if (typeof updateTaskDto.title !== 'undefined') task.title = updateTaskDto.title
     if (typeof updateTaskDto.description !== 'undefined') task.description = updateTaskDto.description

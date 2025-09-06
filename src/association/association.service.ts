@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAssociationDto } from './dto/create-association.dto';
 import { UpdateAssociationDto } from './dto/update-association.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -35,16 +35,16 @@ export class AssociationService {
     return { items, total, page: page ?? 1, limit: take, pageCount }
   }
 
-  findOneById(id: string) {
-    return this.repo.findOneBy({
-      id
-    })
+  async findOneById(id: string) {
+    const association = await this.repo.findOneBy({ id })
+    if (!association) throw new NotFoundException('Associação não encontrada')
+    return association
   }
 
-  findOneByCnpj(cnpj: string) {
-    return this.repo.findOneBy({
-      cnpj
-    })
+  async findOneByCnpj(cnpj: string) {
+    const association = await this.repo.findOneBy({ cnpj })
+    if (!association) throw new NotFoundException('Associação não encontrada')
+    return association
   }
 
   update(id: string, updateAssociationDto: UpdateAssociationDto) {
