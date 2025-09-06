@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AssociationModule } from './association/association.module';
 import { TaskModule } from './task/task.module';
 import { AuthModule } from './auth/auth.module';
+import { MetaModule } from './meta/meta.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { AuthModule } from './auth/auth.module';
     AssociationModule,
     TaskModule,
     AuthModule,
+    MetaModule,
   ],
   controllers: [],
   providers: [],

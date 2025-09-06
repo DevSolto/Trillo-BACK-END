@@ -17,8 +17,8 @@
 <a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
 <a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
   <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us" /></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter" /></a>
 </p>
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
@@ -26,6 +26,21 @@
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+
+## Endpoints: Meta (Enums)
+
+Rotas para expor enums usados em selects do frontend. Todas as rotas estão documentadas no Swagger em `/docs` sob a tag `meta` e requerem autenticação Bearer JWT (mesmo guard global da API).
+
+- GET `/meta/enums/user-roles`
+  - Retorna: `["admin", "editor"]`
+
+- GET `/meta/enums/task-status`
+  - Retorna: `["open", "inProgress", "finished", "canceled"]`
+
+- GET `/meta/enums`
+  - Retorna: `{ "userRoles": ["admin", "editor"], "taskStatus": ["open", "inProgress", "finished", "canceled"] }`
+
+Observação: Caso deseje tornar essas rotas públicas (sem JWT), marque os handlers com o decorator `@Public()` definido em `src/auth/public.decorator.ts`.
 
 ## Project setup
 
@@ -98,3 +113,62 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+## Fluxo de Branches (Git)
+
+Adotamos um fluxo simples baseado em `develop` para isolar o trabalho em andamento da `main`.
+
+- Branches principais:
+  - `main`: código estável e pronto para produção.
+  - `develop`: integração contínua de features em desenvolvimento.
+
+- Branches de suporte:
+  - `feature/<nome>`: derivado de `develop` para cada tarefa/feature.
+  - `hotfix/<nome>`: derivado de `main` para correções urgentes em produção.
+  - `release/<versão>` (opcional): estabilização antes de promover à `main`.
+
+### Passos rápidos
+
+Criar e publicar o branch `develop` (uma única vez):
+
+```bash
+git checkout main
+git pull
+git checkout -b develop
+git push -u origin develop
+```
+
+Criar uma feature a partir de `develop` e abrir PR de volta para `develop`:
+
+```bash
+git checkout develop
+git pull --rebase
+git checkout -b feature/minha-tarefa
+# ... commits ...
+git push -u origin feature/minha-tarefa
+# Abra PR: feature/minha-tarefa -> develop
+```
+
+Promover para produção: abra um PR de `develop` -> `main` quando estiver pronto para release.
+
+Hotfix (produção):
+
+```bash
+git checkout main && git pull
+git checkout -b hotfix/ajuste-critico
+# ... commits ...
+git push -u origin hotfix/ajuste-critico
+# Abra PR: hotfix/ajuste-critico -> main
+# Após merge, sincronize em develop:
+git checkout develop && git pull --rebase
+git merge --no-ff origin/main
+git push
+```
+
+### Boas práticas
+
+- Proteja `main` (e opcionalmente `develop`) exigindo PR + checks no provedor Git.
+- Configure o CI para rodar em `main` e `develop`.
+- Atualize sua branch com `git pull --rebase` para evitar merges desnecessários.
+- Nomeie branches de forma consistente: `feature/`, `hotfix/`, `release/`.
+- Use PRs pequenos e focados; descreva claramente objetivo e escopo.
