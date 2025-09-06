@@ -9,7 +9,7 @@ import type { Request } from 'express';
 
 @ApiTags('user')
 @ApiBearerAuth('access-token')
-@Controller('user')
+@Controller(['user', 'usuarios'])
 export class UserController {
   constructor(private readonly userService: UserService) { }
 
@@ -50,8 +50,13 @@ export class UserController {
   @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Itens por página', example: 10 })
   @ApiQuery({ name: 'sortBy', required: false, enum: ['id', 'name', 'email', 'role'], description: 'Campo para ordenação' })
   @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'], description: 'Direção da ordenação' })
-  findAll(@Query() query: QueryUserDto) {
-    return this.userService.findAll(query);
+  findAll(@Query() query: any) {
+    // alias perPage -> limit
+    const q: QueryUserDto = { ...query }
+    if (q && (q as any).perPage && !q.limit) {
+      q.limit = Number((q as any).perPage)
+    }
+    return this.userService.findAll(q);
   }
 
   @Get('id/:id')

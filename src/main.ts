@@ -6,6 +6,8 @@ import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  // Habilita CORS para consumo via frontend (localhost e produção)
+  app.enableCors({ origin: true, credentials: true });
   app.useGlobalPipes(new ValidationPipe({
   whitelist: true,
   forbidNonWhitelisted: true,
