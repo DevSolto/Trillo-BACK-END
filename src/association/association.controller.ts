@@ -8,7 +8,7 @@ import { QueryAssociationDto } from './dto/query-association.dto';
 
 @ApiTags('association')
 @ApiBearerAuth('access-token')
-@Controller('association')
+@Controller(['association', 'associacoes'])
 export class AssociationController {
   constructor(private readonly associationService: AssociationService) {}
 
@@ -29,8 +29,13 @@ export class AssociationController {
   @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Itens por página', example: 10 })
   @ApiQuery({ name: 'sortBy', required: false, enum: ['id', 'name', 'cnpj', 'status'], description: 'Campo para ordenação' })
   @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'], description: 'Direção da ordenação' })
-  findAll(@Query() query: QueryAssociationDto) {
-    return this.associationService.findAll(query);
+  findAll(@Query() query: any) {
+    // alias perPage -> limit
+    const q: QueryAssociationDto = { ...query }
+    if (q && (q as any).perPage && !q.limit) {
+      q.limit = Number((q as any).perPage)
+    }
+    return this.associationService.findAll(q);
   }
 
   @Get('id/:id')

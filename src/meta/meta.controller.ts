@@ -3,12 +3,14 @@ import { ApiBearerAuth, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '
 import { ErrorResponseDto } from 'src/common/dto/error-response.dto';
 import { TaskStatus } from 'src/task/entities/task.entity';
 import { UserRole } from 'src/user/entities/user.entity';
+import { Public } from 'src/auth/public.decorator';
 
 @ApiTags('meta')
 @ApiBearerAuth('access-token')
 @Controller('meta')
 export class MetaController {
   @Get('enums/user-roles')
+  @Public()
   @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
   @ApiOkResponse({
     description: 'Lista de valores do enum UserRole',
@@ -19,6 +21,7 @@ export class MetaController {
   }
 
   @Get('enums/task-status')
+  @Public()
   @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
   @ApiOkResponse({
     description: 'Lista de valores do enum TaskStatus',
@@ -29,6 +32,7 @@ export class MetaController {
   }
 
   @Get('enums')
+  @Public()
   @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
   @ApiOkResponse({
     description: 'Objeto com listas dos enums usados nos selects',
