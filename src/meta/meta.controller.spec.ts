@@ -29,11 +29,11 @@ describe('MetaController', () => {
     ])
   })
 
-  it('getAllEnums retorna objeto com ambos arrays', () => {
+  it('getAllEnums retorna objeto com todos os arrays', () => {
     expect(controller.getAllEnums()).toEqual({
       userRoles: ['admin', 'editor'],
       taskStatus: ['open', 'inProgress', 'finished', 'canceled'],
+      taskTypes: ['general', 'bug', 'feature', 'improvement', 'meeting'],
     })
   })
 })
-
