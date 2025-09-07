@@ -8,6 +8,14 @@ export enum TaskStatus {
     CANCELED = "canceled"
 }
 
+export enum TaskType {
+    GENERAL = "general",
+    BUG = "bug",
+    FEATURE = "feature",
+    IMPROVEMENT = "improvement",
+    MEETING = "meeting",
+}
+
 
 @Entity("task")
 export class Task {
@@ -30,6 +38,13 @@ export class Task {
         default: TaskStatus.OPEN
     })
     status: TaskStatus
+
+    @Column({
+        type: "enum",
+        enum: TaskType,
+        default: TaskType.GENERAL
+    })
+    type: TaskType
 
     @CreateDateColumn({ type: 'timestamptz' })
     createdAt: Date
