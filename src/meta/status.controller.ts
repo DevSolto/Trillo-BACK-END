@@ -7,9 +7,8 @@ import { Public } from 'src/auth/public.decorator'
 export class StatusController {
   @Get()
   @Public()
-  @ApiOkResponse({ description: 'Status do serviço', schema: { type: 'object', properties: { status: { type: 'string', example: 'ok' } } } })
+  @ApiOkResponse({ description: 'Service status', schema: { type: 'object', properties: { status: { type: 'string', example: 'ok' } } } })
   status() {
     return { status: 'ok' }
   }
 }
-

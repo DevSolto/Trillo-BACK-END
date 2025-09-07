@@ -12,8 +12,8 @@ export class AuthController {
 
   @Public()
   @Post('login')
-  @ApiBadRequestResponse({ description: 'Dados inválidos', type: ValidationErrorResponseDto })
-  @ApiUnauthorizedResponse({ description: 'Login local desativado', type: ErrorResponseDto })
+  @ApiBadRequestResponse({ description: 'Invalid data', type: ValidationErrorResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Local login disabled', type: ErrorResponseDto })
   login(@Body() dto: CreateAuthDto) {
     return this.authService.login(dto)
   }

@@ -18,8 +18,8 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter());
 
   const config = new DocumentBuilder()
-    .setTitle('API - Tarefa Associada')
-    .setDescription('Documentação automática gerada com Swagger')
+    .setTitle('Associated Task API')
+    .setDescription('Automatically generated API documentation (Swagger)')
     .setVersion('1.0.0')
     .addBearerAuth(
       {

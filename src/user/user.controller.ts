@@ -9,29 +9,29 @@ import type { Request } from 'express';
 
 @ApiTags('user')
 @ApiBearerAuth('access-token')
-@Controller(['user', 'usuarios'])
+@Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) { }
 
   @Post()
-  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
-  @ApiBadRequestResponse({ description: 'Dados inválidos', type: ValidationErrorResponseDto })
-  @ApiConflictResponse({ description: 'E-mail já em uso', type: ErrorResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorResponseDto })
+  @ApiBadRequestResponse({ description: 'Invalid data', type: ValidationErrorResponseDto })
+  @ApiConflictResponse({ description: 'Email already in use', type: ErrorResponseDto })
   create(@Req() req: Request, @Body() createUserDto: CreateUserDto) {
     const { user } = req as any;
     const userId: string = user?.userId;
     const userEmail: string = user?.userEmail ?? createUserDto.email;
     if (!userId) {
-      throw new UnauthorizedException('Token inválido ou ausente');
+      throw new UnauthorizedException('Invalid or missing token');
     }
     return this.userService.create(userId, userEmail, createUserDto);
   }
 
   @Get()
-  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
-  @ApiBadRequestResponse({ description: 'Parâmetros de consulta inválidos', type: ValidationErrorResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorResponseDto })
+  @ApiBadRequestResponse({ description: 'Invalid query parameters', type: ValidationErrorResponseDto })
   @ApiOkResponse({
-    description: 'Lista paginada de usuários',
+    description: 'Paginated list of users',
     schema: {
       type: 'object',
       properties: {
@@ -43,13 +43,13 @@ export class UserController {
       },
     },
   })
-  @ApiQuery({ name: 'name', required: false, type: String, description: 'Filtro por nome (contém)' })
-  @ApiQuery({ name: 'email', required: false, type: String, description: 'Filtro por e-mail (contém)' })
-  @ApiQuery({ name: 'role', required: false, enum: ['admin', 'editor'], description: 'Filtrar por papel' })
-  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Página atual', example: 1 })
-  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Itens por página', example: 10 })
-  @ApiQuery({ name: 'sortBy', required: false, enum: ['id', 'name', 'email', 'role'], description: 'Campo para ordenação' })
-  @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'], description: 'Direção da ordenação' })
+  @ApiQuery({ name: 'name', required: false, type: String, description: 'Filter by name (contains)' })
+  @ApiQuery({ name: 'email', required: false, type: String, description: 'Filter by email (contains)' })
+  @ApiQuery({ name: 'role', required: false, enum: ['admin', 'editor'], description: 'Filter by role' })
+  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Current page', example: 1 })
+  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Items per page', example: 10 })
+  @ApiQuery({ name: 'sortBy', required: false, enum: ['id', 'name', 'email', 'role'], description: 'Sort field' })
+  @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'], description: 'Sort direction' })
   findAll(@Query() query: any) {
     // alias perPage -> limit
     const q: QueryUserDto = { ...query }
@@ -60,31 +60,31 @@ export class UserController {
   }
 
   @Get('id/:id')
-  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
-  @ApiNotFoundResponse({ description: 'Usuário não encontrado', type: ErrorResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorResponseDto })
+  @ApiNotFoundResponse({ description: 'User not found', type: ErrorResponseDto })
   findOneById(@Param('id') id: string) {
     return this.userService.findOne(id);
   }
 
   @Get('email/:email')
-  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
-  @ApiNotFoundResponse({ description: 'Usuário não encontrado', type: ErrorResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorResponseDto })
+  @ApiNotFoundResponse({ description: 'User not found', type: ErrorResponseDto })
   findOneByEmail(@Param('email') email: string) {
     return this.userService.findOneByEmail(email);
   }
 
   @Patch(':id')
-  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
-  @ApiBadRequestResponse({ description: 'Dados inválidos', type: ValidationErrorResponseDto })
-  @ApiNotFoundResponse({ description: 'Usuário não encontrado', type: ErrorResponseDto })
-  @ApiConflictResponse({ description: 'E-mail já em uso', type: ErrorResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorResponseDto })
+  @ApiBadRequestResponse({ description: 'Invalid data', type: ValidationErrorResponseDto })
+  @ApiNotFoundResponse({ description: 'User not found', type: ErrorResponseDto })
+  @ApiConflictResponse({ description: 'Email already in use', type: ErrorResponseDto })
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
-  @ApiNotFoundResponse({ description: 'Usuário não encontrado', type: ErrorResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorResponseDto })
+  @ApiNotFoundResponse({ description: 'User not found', type: ErrorResponseDto })
   remove(@Param('id') id: string) {
     return this.userService.remove(id);
   }
