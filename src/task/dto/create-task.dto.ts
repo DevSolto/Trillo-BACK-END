@@ -1,5 +1,5 @@
 import { ArrayUnique, IsArray, IsDateString, IsDefined, IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator'
-import { TaskStatus } from '../entities/task.entity'
+import { TaskStatus, TaskType } from '../entities/task.entity'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 export class CreateTaskDto {
@@ -19,6 +19,11 @@ export class CreateTaskDto {
   @IsOptional()
   @IsEnum(TaskStatus, { message: `Status inválido. Valores permitidos: ${Object.values(TaskStatus).join(', ')}` })
   status?: TaskStatus
+
+  @ApiPropertyOptional({ description: 'Task type', enum: TaskType, example: 'general' })
+  @IsOptional()
+  @IsEnum(TaskType, { message: `type inválido. Permitidos: ${Object.values(TaskType).join(', ')}` })
+  type?: TaskType
 
   @ApiPropertyOptional({ description: 'Due date (ISO 8601)', example: '2025-12-31T23:59:59Z' })
   @IsOptional()

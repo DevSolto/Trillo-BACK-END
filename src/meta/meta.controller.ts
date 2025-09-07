@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { ErrorResponseDto } from 'src/common/dto/error-response.dto';
-import { TaskStatus } from 'src/task/entities/task.entity';
+import { TaskStatus, TaskType } from 'src/task/entities/task.entity';
 import { UserRole } from 'src/user/entities/user.entity';
 import { Public } from 'src/auth/public.decorator';
 
@@ -41,6 +41,7 @@ export class MetaController {
       properties: {
         userRoles: { type: 'array', items: { type: 'string', enum: Object.values(UserRole) } },
         taskStatus: { type: 'array', items: { type: 'string', enum: Object.values(TaskStatus) } },
+        taskTypes: { type: 'array', items: { type: 'string', enum: Object.values(TaskType) } },
       },
     },
   })
@@ -48,6 +49,7 @@ export class MetaController {
     return {
       userRoles: Object.values(UserRole),
       taskStatus: Object.values(TaskStatus),
+      taskTypes: Object.values(TaskType),
     };
   }
 }
