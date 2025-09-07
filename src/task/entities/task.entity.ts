@@ -1,5 +1,5 @@
 import { User } from "src/user/entities/user.entity";
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 export enum TaskStatus {
     OPEN = "open",
@@ -30,6 +30,12 @@ export class Task {
         default: TaskStatus.OPEN
     })
     status: TaskStatus
+
+    @CreateDateColumn({ type: 'timestamptz' })
+    createdAt: Date
+
+    @Column({ type: 'timestamptz', nullable: true })
+    dueDate: Date | null
 
     @ManyToOne(
         () => User,

@@ -8,27 +8,27 @@ import { QueryAssociationDto } from './dto/query-association.dto';
 
 @ApiTags('association')
 @ApiBearerAuth('access-token')
-@Controller(['association', 'associacoes'])
+@Controller('association')
 export class AssociationController {
   constructor(private readonly associationService: AssociationService) {}
 
   @Post()
-  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
-  @ApiBadRequestResponse({ description: 'Dados inválidos', type: ValidationErrorResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorResponseDto })
+  @ApiBadRequestResponse({ description: 'Invalid data', type: ValidationErrorResponseDto })
   create(@Body() createAssociationDto: CreateAssociationDto) {
     return this.associationService.create(createAssociationDto);
   }
 
   @Get()
-  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
-  @ApiBadRequestResponse({ description: 'Parâmetros de consulta inválidos', type: ValidationErrorResponseDto })
-  @ApiQuery({ name: 'name', required: false, type: String, description: 'Filtro por nome (contém)' })
-  @ApiQuery({ name: 'cnpj', required: false, type: String, description: 'Filtro por CNPJ (contém)' })
-  @ApiQuery({ name: 'status', required: false, type: Boolean, description: 'Filtrar por status' })
-  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Página atual', example: 1 })
-  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Itens por página', example: 10 })
-  @ApiQuery({ name: 'sortBy', required: false, enum: ['id', 'name', 'cnpj', 'status'], description: 'Campo para ordenação' })
-  @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'], description: 'Direção da ordenação' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorResponseDto })
+  @ApiBadRequestResponse({ description: 'Invalid query parameters', type: ValidationErrorResponseDto })
+  @ApiQuery({ name: 'name', required: false, type: String, description: 'Filter by name (contains)' })
+  @ApiQuery({ name: 'cnpj', required: false, type: String, description: 'Filter by CNPJ (contains)' })
+  @ApiQuery({ name: 'status', required: false, type: Boolean, description: 'Filter by status' })
+  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Current page', example: 1 })
+  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Items per page', example: 10 })
+  @ApiQuery({ name: 'sortBy', required: false, enum: ['id', 'name', 'cnpj', 'status'], description: 'Sort field' })
+  @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'], description: 'Sort direction' })
   findAll(@Query() query: any) {
     // alias perPage -> limit
     const q: QueryAssociationDto = { ...query }
@@ -39,28 +39,28 @@ export class AssociationController {
   }
 
   @Get('id/:id')
-  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
-  @ApiNotFoundResponse({ description: 'Associação não encontrada', type: ErrorResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorResponseDto })
+  @ApiNotFoundResponse({ description: 'Association not found', type: ErrorResponseDto })
   findOneById(@Param('id') id: string) {
     return this.associationService.findOneById(id);
   }
 
   @Get('cnpj/:cnpj')
-  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
-  @ApiNotFoundResponse({ description: 'Associação não encontrada', type: ErrorResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorResponseDto })
+  @ApiNotFoundResponse({ description: 'Association not found', type: ErrorResponseDto })
   findOneCnpj(@Param('cnpj') cnpj: string) {
     return this.associationService.findOneByCnpj(cnpj);
   }
 
   @Patch(':id')
-  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
-  @ApiBadRequestResponse({ description: 'Dados inválidos', type: ValidationErrorResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorResponseDto })
+  @ApiBadRequestResponse({ description: 'Invalid data', type: ValidationErrorResponseDto })
   update(@Param('id') id: string, @Body() updateAssociationDto: UpdateAssociationDto) {
     return this.associationService.update(id, updateAssociationDto);
   }
 
   @Delete(':id')
-  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorResponseDto })
   remove(@Param('id') id: string) {
     return this.associationService.remove(id);
   }

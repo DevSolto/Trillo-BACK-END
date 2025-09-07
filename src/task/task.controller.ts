@@ -13,17 +13,17 @@ export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
   @Post()
-  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
-  @ApiBadRequestResponse({ description: 'Dados inválidos', type: ValidationErrorResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorResponseDto })
+  @ApiBadRequestResponse({ description: 'Invalid data', type: ValidationErrorResponseDto })
   create(@Body() createTaskDto: CreateTaskDto) {
     return this.taskService.create(createTaskDto);
   }
 
   @Get()
-  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
-  @ApiBadRequestResponse({ description: 'Parâmetros de consulta inválidos', type: ValidationErrorResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorResponseDto })
+  @ApiBadRequestResponse({ description: 'Invalid query parameters', type: ValidationErrorResponseDto })
   @ApiOkResponse({
-    description: 'Lista paginada de tarefas',
+    description: 'Paginated list of tasks',
     schema: {
       type: 'object',
       properties: {
@@ -35,34 +35,34 @@ export class TaskController {
       },
     },
   })
-  @ApiQuery({ name: 'title', required: false, type: String, description: 'Filtro por título (contém)' })
-  @ApiQuery({ name: 'status', required: false, enum: ['open', 'inProgress', 'finished', 'canceled'], description: 'Filtrar por status' })
-  @ApiQuery({ name: 'creatorId', required: false, type: String, description: 'Filtrar por criador (UUID)' })
-  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Página atual', example: 1 })
-  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Itens por página', example: 10 })
-  @ApiQuery({ name: 'sortBy', required: false, enum: ['id', 'title', 'status'], description: 'Campo para ordenação' })
-  @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'], description: 'Direção da ordenação' })
+  @ApiQuery({ name: 'title', required: false, type: String, description: 'Filter by title (contains)' })
+  @ApiQuery({ name: 'status', required: false, enum: ['open', 'inProgress', 'finished', 'canceled'], description: 'Filter by status' })
+  @ApiQuery({ name: 'creatorId', required: false, type: String, description: 'Filter by creator (UUID)' })
+  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Current page', example: 1 })
+  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Items per page', example: 10 })
+  @ApiQuery({ name: 'sortBy', required: false, enum: ['id', 'title', 'status', 'createdAt', 'dueDate'], description: 'Sort field' })
+  @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'], description: 'Sort direction' })
   findAll(@Query() query: QueryTaskDto) {
     return this.taskService.findAll(query);
   }
 
   @Get(':id')
-  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
-  @ApiNotFoundResponse({ description: 'Tarefa não encontrada', type: ErrorResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorResponseDto })
+  @ApiNotFoundResponse({ description: 'Task not found', type: ErrorResponseDto })
   findOne(@Param('id') id: string) {
     return this.taskService.findOne(id);
   }
 
   @Patch(':id')
-  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
-  @ApiBadRequestResponse({ description: 'Dados inválidos', type: ValidationErrorResponseDto })
-  @ApiNotFoundResponse({ description: 'Tarefa não encontrada', type: ErrorResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorResponseDto })
+  @ApiBadRequestResponse({ description: 'Invalid data', type: ValidationErrorResponseDto })
+  @ApiNotFoundResponse({ description: 'Task not found', type: ErrorResponseDto })
   update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
     return this.taskService.update(id, updateTaskDto);
   }
 
   @Delete(':id')
-  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorResponseDto })
   remove(@Param('id') id: string) {
     return this.taskService.remove(id);
   }

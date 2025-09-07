@@ -15,13 +15,14 @@ export class TaskService {
   ) {}
 
   async create(createTaskDto: CreateTaskDto) {
-    const { title, description, status, creatorId, teamIds } = createTaskDto
+    const { title, description, status, creatorId, teamIds, dueDate } = createTaskDto
 
     const task = this.repo.create({
       title,
       description,
       status,
       creator: { id: creatorId } as User,
+      ...(typeof dueDate !== 'undefined' ? { dueDate: new Date(dueDate) } : {}),
       team: (teamIds ?? []).map((id) => ({ id } as User)),
     })
 
@@ -64,6 +65,7 @@ export class TaskService {
     if (typeof updateTaskDto.description !== 'undefined') task.description = updateTaskDto.description
     if (typeof updateTaskDto.status !== 'undefined') task.status = updateTaskDto.status
     if (typeof updateTaskDto.creatorId !== 'undefined') task.creator = { id: updateTaskDto.creatorId } as User
+    if (typeof (updateTaskDto as any).dueDate !== 'undefined') task.dueDate = (updateTaskDto as any).dueDate ? new Date((updateTaskDto as any).dueDate as any) : null
     if (typeof updateTaskDto.teamIds !== 'undefined') task.team = (updateTaskDto.teamIds ?? []).map((id) => ({ id } as User))
 
     return await this.repo.save(task)

@@ -11,9 +11,9 @@ import { Public } from 'src/auth/public.decorator';
 export class MetaController {
   @Get('enums/user-roles')
   @Public()
-  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorResponseDto })
   @ApiOkResponse({
-    description: 'Lista de valores do enum UserRole',
+    description: 'List of values for the UserRole enum',
     schema: { type: 'array', items: { type: 'string', enum: Object.values(UserRole) } },
   })
   getUserRoles() {
@@ -22,9 +22,9 @@ export class MetaController {
 
   @Get('enums/task-status')
   @Public()
-  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorResponseDto })
   @ApiOkResponse({
-    description: 'Lista de valores do enum TaskStatus',
+    description: 'List of values for the TaskStatus enum',
     schema: { type: 'array', items: { type: 'string', enum: Object.values(TaskStatus) } },
   })
   getTaskStatus() {
@@ -33,9 +33,9 @@ export class MetaController {
 
   @Get('enums')
   @Public()
-  @ApiUnauthorizedResponse({ description: 'Não autenticado', type: ErrorResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized', type: ErrorResponseDto })
   @ApiOkResponse({
-    description: 'Objeto com listas dos enums usados nos selects',
+    description: 'Object with lists of enums used in selects',
     schema: {
       type: 'object',
       properties: {
