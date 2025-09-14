@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common'
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { Public } from 'src/auth/public.decorator'
-import { TaskStatus } from 'src/task/entities/task.entity'
+import { TaskPriority, TaskStatus } from 'src/task/entities/task.entity'
 
 @ApiTags('enums')
 @Controller('enums')
@@ -9,12 +9,11 @@ export class EnumsController {
   @Get('priorities')
   @Public()
   @ApiOkResponse({
-    description: 'List of priorities (placeholder)',
-    schema: { type: 'array', items: { type: 'string' }, example: ['low', 'medium', 'high'] },
+    description: 'List of task priorities',
+    schema: { type: 'array', items: { type: 'string', enum: Object.values(TaskPriority) } },
   })
   getPrioridades() {
-    // Ajuste se houver enum real de prioridades no domínio
-    return ['low', 'medium', 'high']
+    return Object.values(TaskPriority)
   }
 
   @Get('types')
