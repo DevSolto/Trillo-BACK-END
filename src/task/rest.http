@@ -15,6 +15,7 @@ Content-Type: application/json
   "description": "Do something important",
   "status": "open",
   "creatorId": "{{userId}}",
+  "associationId": "{{associationId}}",
   "teamIds": [
     "{{userId}}"
   ]
