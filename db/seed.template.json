@@ -1,0 +1,27 @@
+{
+  "$model": {
+    "users": {
+      "id": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "name": "santiago Souto",
+      "email": "santiagosiqueirasouto@gmail.com",
+      "role": "admin"
+    },
+    "associations": {
+      "name": "string",
+      "cnpj": "string (14 dígitos ou 00.000.000/0000-00)",
+      "status": "boolean (default: true)"
+    },
+    "tasks": {
+      "title": "string",
+      "description": "string",
+      "status": ["open", "inProgress", "finished", "canceled"],
+      "priority": ["low", "medium", "high"],
+      "dueDate": "string ISO 8601 ou null",
+      "creatorId": "uuid-v4",
+      "associationId": "uuid-v4",
+      "teamIds": ["uuid-v4"]
+    }
+  },
+  "associations": [],
+  "tasks": []
+}

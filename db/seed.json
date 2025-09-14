@@ -1,0 +1,659 @@
+{
+  "$model": {
+    "users": {
+      "id": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "name": "santiago Souto",
+      "email": "santiagosiqueirasouto@gmail.com",
+      "role": "admin"
+    },
+    "associations": {
+      "id": "uuid-v4",
+      "name": "string",
+      "cnpj": "string (14 dígitos ou 00.000.000/0000-00)",
+      "status": "boolean (default: true)"
+    },
+    "tasks": {
+      "title": "string",
+      "description": "string",
+      "status": ["open", "inProgress", "finished", "canceled"],
+      "priority": ["low", "medium", "high"],
+      "dueDate": "string ISO 8601 ou null",
+      "creatorId": "uuid-v4",
+      "associationId": "uuid-v4",
+      "teamIds": ["uuid-v4"]
+    }
+  },
+  "associations": [
+    { "id": "a7b1b1b0-7c0d-4c51-9f54-2b4c9c3b6e01", "name": "Associação de Trabalhadores Rurais de Picuí", "cnpj": "84.321.100/0001-01", "status": true },
+    { "id": "6e3b2e14-1d2f-4f90-a6a1-8c7b3e5d9c02", "name": "Associação de Trabalhadores Rurais de Caruaru", "cnpj": "84.321.101/0001-12", "status": true },
+    { "id": "0f3a7c25-8a64-4bda-9c83-3f9d1a4b8d03", "name": "Associação de Trabalhadores Rurais de Garanhuns", "cnpj": "84.321.102/0001-23", "status": true },
+    { "id": "5b9d2c36-3e70-4d1a-b5d2-1e6f2a7c9e04", "name": "Associação de Trabalhadores Rurais de Sertânia", "cnpj": "84.321.103/0001-34", "status": true },
+    { "id": "d1c2e3f4-5678-4abc-8def-123456789e05", "name": "Associação de Trabalhadores Rurais de Arcoverde", "cnpj": "84.321.104/0001-45", "status": true },
+    { "id": "9a8b7c6d-5e4f-4a3b-9c2d-0f1e2d3c4b06", "name": "Associação de Trabalhadores Rurais de Serra Talhada", "cnpj": "84.321.105/0001-56", "status": true },
+    { "id": "3c2d1e0f-9a8b-4c7d-a1b2-3c4d5e6f7a07", "name": "Associação de Trabalhadores Rurais de Ouricuri", "cnpj": "84.321.106/0001-67", "status": false },
+    { "id": "2b3c4d5e-6f70-4a81-8b92-a3b4c5d6e708", "name": "Associação de Trabalhadores Rurais de Salgueiro", "cnpj": "84.321.107/0001-78", "status": true },
+    { "id": "7f6e5d4c-3b2a-4c1d-b2c3-d4e5f6a7b809", "name": "Associação de Trabalhadores Rurais de Afogados da Ingazeira", "cnpj": "84.321.108/0001-89", "status": true },
+    { "id": "4e3d2c1b-0a9f-4e8d-9b7a-6c5d4e3f2a10", "name": "Associação de Trabalhadores Rurais de Petrolina", "cnpj": "84.321.109/0001-90", "status": true },
+    { "id": "8c7b6a5d-4e3f-4d2c-a1b0-9f8e7d6c5b11", "name": "Associação de Trabalhadores Rurais de Santa Cruz do Capibaribe", "cnpj": "84.321.110/0001-00", "status": false },
+    { "id": "b1c2d3e4-f5a6-4b7c-8d9e-0a1b2c3d4e12", "name": "Associação de Trabalhadores Rurais de Campina Grande", "cnpj": "84.321.111/0001-11", "status": true },
+    { "id": "c3d4e5f6-a7b8-4c9d-8e7f-6a5b4c3d2e13", "name": "Associação de Trabalhadores Rurais de Patos", "cnpj": "84.321.112/0001-22", "status": true },
+    { "id": "e5f6a7b8-c9d0-4e1f-8a9b-b0c1d2e3f414", "name": "Associação de Trabalhadores Rurais de Cajazeiras", "cnpj": "84.321.113/0001-33", "status": false },
+    { "id": "f7a8b9c0-d1e2-4f3a-9b8c-7d6e5f4a3b15", "name": "Associação de Trabalhadores Rurais de Vitória de Santo Antão", "cnpj": "84.321.114/0001-44", "status": true }
+  ],
+  "tasks": [
+    {
+      "title": "[ATR Picuí] Preparar assembleia geral (edital + ata)",
+      "description": "Organizar edital de convocação e minuta de ata para assembleia ordinária dos associados.",
+      "status": "open",
+      "dueDate": "2025-09-25T12:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "a7b1b1b0-7c0d-4c51-9f54-2b4c9c3b6e01",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Picuí] Emitir CND (Receita/PGFN)",
+      "description": "Solicitar e arquivar a Certidão Negativa de Débitos para manter a associação apta a firmar convênios.",
+      "status": "inProgress",
+      "dueDate": "2025-09-20T15:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "a7b1b1b0-7c0d-4c51-9f54-2b4c9c3b6e01",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Picuí] Prestação de contas — Agosto/2025",
+      "description": "Consolidar notas fiscais e extratos bancários e enviar ao conselho fiscal.",
+      "status": "finished",
+      "dueDate": "2025-09-05T23:59:59.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "a7b1b1b0-7c0d-4c51-9f54-2b4c9c3b6e01",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Picuí] Renovar certificado digital e-CNPJ",
+      "description": "Agendar validação e providenciar documentos para renovação do e-CNPJ.",
+      "status": "open",
+      "dueDate": "2025-10-10T18:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "a7b1b1b0-7c0d-4c51-9f54-2b4c9c3b6e01",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Caruaru] Atualizar diretoria no cartório",
+      "description": "Protocolar ata de eleição e registrar a nova diretoria.",
+      "status": "inProgress",
+      "dueDate": "2025-09-30T20:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "6e3b2e14-1d2f-4f90-a6a1-8c7b3e5d9c02",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Caruaru] Conciliação bancária — Setembro",
+      "description": "Conferir extratos e lançar movimentações do mês no livro caixa.",
+      "status": "open",
+      "dueDate": "2025-10-02T23:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "6e3b2e14-1d2f-4f90-a6a1-8c7b3e5d9c02",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Caruaru] Revisar estatuto social",
+      "description": "Propor ajustes de conformidade e atualizar cláusulas de LGPD.",
+      "status": "finished",
+      "dueDate": "2025-08-28T22:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "6e3b2e14-1d2f-4f90-a6a1-8c7b3e5d9c02",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Caruaru] Organizar mutirão de cadastro de associados",
+      "description": "Coletar dados e assinaturas para atualização cadastral anual.",
+      "status": "open",
+      "dueDate": "2025-10-12T13:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "6e3b2e14-1d2f-4f90-a6a1-8c7b3e5d9c02",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Garanhuns] Renovar CAF (Cadastro da Agricultura Familiar)",
+      "description": "Agendar atendimento e reunir documentos exigidos para renovação do CAF.",
+      "status": "inProgress",
+      "dueDate": "2025-10-01T16:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "0f3a7c25-8a64-4bda-9c83-3f9d1a4b8d03",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Garanhuns] Preparar relatório de atividades — 3º tri",
+      "description": "Compilar ações de extensão rural e formações realizadas no trimestre.",
+      "status": "open",
+      "dueDate": "2025-10-05T21:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "0f3a7c25-8a64-4bda-9c83-3f9d1a4b8d03",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Garanhuns] Regularizar alvará de funcionamento",
+      "description": "Verificar pendências municipais e emitir novo alvará.",
+      "status": "finished",
+      "dueDate": "2025-09-01T12:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "0f3a7c25-8a64-4bda-9c83-3f9d1a4b8d03",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Garanhuns] Publicar edital de convocação",
+      "description": "Publicar edital em mural e canais digitais conforme estatuto.",
+      "status": "open",
+      "dueDate": "2025-09-22T11:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "0f3a7c25-8a64-4bda-9c83-3f9d1a4b8d03",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Sertânia] Elaborar plano de trabalho para edital",
+      "description": "Estruturar metas, cronograma e orçamento para submissão.",
+      "status": "inProgress",
+      "dueDate": "2025-10-15T23:59:59.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "5b9d2c36-3e70-4d1a-b5d2-1e6f2a7c9e04",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Sertânia] Submeter prestação de contas de convênio",
+      "description": "Enviar documentos comprobatórios no sistema do concedente.",
+      "status": "open",
+      "dueDate": "2025-09-28T17:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "5b9d2c36-3e70-4d1a-b5d2-1e6f2a7c9e04",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Sertânia] Atualizar dados bancários com a agência",
+      "description": "Solicitar inclusão de nova assinatura autorizada na conta.",
+      "status": "finished",
+      "dueDate": "2025-09-03T14:30:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "5b9d2c36-3e70-4d1a-b5d2-1e6f2a7c9e04",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Sertânia] Ajustar política de privacidade (LGPD)",
+      "description": "Revisar formulários de consentimento e armazenamento de dados.",
+      "status": "open",
+      "dueDate": "2025-11-01T19:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "5b9d2c36-3e70-4d1a-b5d2-1e6f2a7c9e04",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Arcoverde] Lançar folha de pagamento — Setembro",
+      "description": "Calcular pró-labore/folha e enviar recibos aos colaboradores.",
+      "status": "inProgress",
+      "dueDate": "2025-09-18T23:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "d1c2e3f4-5678-4abc-8def-123456789e05",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Arcoverde] Contratar assistência técnica rural",
+      "description": "Solicitar três orçamentos e aprovar fornecedor.",
+      "status": "open",
+      "dueDate": "2025-10-08T20:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "d1c2e3f4-5678-4abc-8def-123456789e05",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Arcoverde] Atualizar cadastro na Receita Federal",
+      "description": "Verificar quadro de atividades e endereço na RFB.",
+      "status": "finished",
+      "dueDate": "2025-09-06T13:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "d1c2e3f4-5678-4abc-8def-123456789e05",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Arcoverde] Inventário de equipamentos",
+      "description": "Listar bens permanentes e registrar situação/etiquetas.",
+      "status": "open",
+      "dueDate": "2025-10-20T12:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "d1c2e3f4-5678-4abc-8def-123456789e05",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Serra Talhada] Atualizar cadastro de associados",
+      "description": "Conferir contatos e situação de adimplência dos membros.",
+      "status": "open",
+      "dueDate": "2025-10-03T22:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "9a8b7c6d-5e4f-4a3b-9c2d-0f1e2d3c4b06",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Serra Talhada] Reunião do conselho fiscal",
+      "description": "Agendar e registrar parecer sobre contas do trimestre.",
+      "status": "finished",
+      "dueDate": "2025-09-09T23:59:59.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "9a8b7c6d-5e4f-4a3b-9c2d-0f1e2d3c4b06",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Serra Talhada] Regularizar pendência de IPTU",
+      "description": "Negociar e emitir guia para quitação do imóvel sede.",
+      "status": "open",
+      "dueDate": "2025-10-18T17:30:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "9a8b7c6d-5e4f-4a3b-9c2d-0f1e2d3c4b06",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Ouricuri] Atualizar conta no sistema bancário",
+      "description": "Cadastrar token e usuário responsável pelas movimentações.",
+      "status": "canceled",
+      "dueDate": null,
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "3c2d1e0f-9a8b-4c7d-a1b2-3c4d5e6f7a07",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Ouricuri] Proposta de curso de capacitação",
+      "description": "Montar proposta de capacitação em boas práticas agrícolas.",
+      "status": "open",
+      "dueDate": "2025-11-05T14:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "3c2d1e0f-9a8b-4c7d-a1b2-3c4d5e6f7a07",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Ouricuri] Auditoria interna de documentos",
+      "description": "Checar prazos de certidões e contratos vigentes.",
+      "status": "inProgress",
+      "dueDate": "2025-09-27T18:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "3c2d1e0f-9a8b-4c7d-a1b2-3c4d5e6f7a07",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Salgueiro] Prestação de contas — Projeto Horta Comunitária",
+      "description": "Consolidar planilhas e comprovantes do projeto apoiado.",
+      "status": "inProgress",
+      "dueDate": "2025-09-26T23:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "2b3c4d5e-6f70-4a81-8b92-a3b4c5d6e708",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Salgueiro] Capacitação em segurança no trabalho rural",
+      "description": "Fechar instrutor e datas para NR-31.",
+      "status": "open",
+      "dueDate": "2025-10-22T12:30:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "2b3c4d5e-6f70-4a81-8b92-a3b4c5d6e708",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Salgueiro] Atualizar inventário de EPIs",
+      "description": "Verificar estoque e necessidades dos associados.",
+      "status": "finished",
+      "dueDate": "2025-09-07T10:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "2b3c4d5e-6f70-4a81-8b92-a3b4c5d6e708",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Afogados da Ingazeira] Publicar calendário de reuniões",
+      "description": "Definir calendário trimestral e divulgar aos membros.",
+      "status": "open",
+      "dueDate": "2025-09-24T16:45:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "7f6e5d4c-3b2a-4c1d-b2c3-d4e5f6a7b809",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Afogados da Ingazeira] Conferir documentação de convênio",
+      "description": "Checar exigências de contrapartida e prazos de execução.",
+      "status": "inProgress",
+      "dueDate": "2025-10-04T15:30:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "7f6e5d4c-3b2a-4c1d-b2c3-d4e5f6a7b809",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Afogados da Ingazeira] Atualizar cadastro no eSocial (se aplicável)",
+      "description": "Verificar vínculos e eventos periódicos.",
+      "status": "open",
+      "dueDate": "2025-11-02T22:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "7f6e5d4c-3b2a-4c1d-b2c3-d4e5f6a7b809",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Petrolina] Plano de comunicação com associados",
+      "description": "Criar grupo de mensagens e boletim mensal.",
+      "status": "open",
+      "dueDate": "2025-10-06T19:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "4e3d2c1b-0a9f-4e8d-9b7a-6c5d4e3f2a10",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Petrolina] Regularizar pendência na prefeitura",
+      "description": "Emitir certidão de regularidade municipal.",
+      "status": "finished",
+      "dueDate": "2025-09-02T12:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "4e3d2c1b-0a9f-4e8d-9b7a-6c5d4e3f2a10",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Petrolina] Atualizar arquivo de associados",
+      "description": "Digitalizar fichas antigas e padronizar campos.",
+      "status": "inProgress",
+      "dueDate": "2025-09-29T18:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "4e3d2c1b-0a9f-4e8d-9b7a-6c5d4e3f2a10",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Santa Cruz do Capibaribe] Criar regulamento interno",
+      "description": "Definir regras de uso da sede e patrimônio.",
+      "status": "open",
+      "dueDate": "2025-10-14T21:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "8c7b6a5d-4e3f-4d2c-a1b0-9f8e7d6c5b11",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Santa Cruz do Capibaribe] Auditoria de contratos",
+      "description": "Revisar contratos com fornecedores e prazos de reajuste.",
+      "status": "canceled",
+      "dueDate": null,
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "8c7b6a5d-4e3f-4d2c-a1b0-9f8e7d6c5b11",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Santa Cruz do Capibaribe] Cadastro em plataforma de convênios",
+      "description": "Completar perfil e anexar documentos obrigatórios.",
+      "status": "inProgress",
+      "dueDate": "2025-09-23T20:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "8c7b6a5d-4e3f-4d2c-a1b0-9f8e7d6c5b11",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Campina Grande] Preparar ata de reunião extraordinária",
+      "description": "Redigir pauta e recolher assinaturas dos presentes.",
+      "status": "open",
+      "dueDate": "2025-09-21T22:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "b1c2d3e4-f5a6-4b7c-8d9e-0a1b2c3d4e12",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Campina Grande] Implantar controle de caixa",
+      "description": "Padronizar planilhas e fluxo de lançamento.",
+      "status": "finished",
+      "dueDate": "2025-08-31T23:59:59.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "b1c2d3e4-f5a6-4b7c-8d9e-0a1b2c3d4e12",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Campina Grande] Revisar prestação de contas — 2º tri",
+      "description": "Checagem final antes do envio ao concedente.",
+      "status": "inProgress",
+      "dueDate": "2025-09-19T16:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "b1c2d3e4-f5a6-4b7c-8d9e-0a1b2c3d4e12",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Patos] Regularizar livros contábeis",
+      "description": "Atualizar razão e diário com movimentos pendentes.",
+      "status": "open",
+      "dueDate": "2025-10-09T23:59:59.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "c3d4e5f6-a7b8-4c9d-8e7f-6a5b4c3d2e13",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Patos] Revalidar senha gov.br",
+      "description": "Garantir acesso aos portais oficiais da associação.",
+      "status": "finished",
+      "dueDate": "2025-09-08T17:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "c3d4e5f6-a7b8-4c9d-8e7f-6a5b4c3d2e13",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Patos] Orçar manutenção predial da sede",
+      "description": "Solicitar avaliações para pintura e reparos elétricos.",
+      "status": "open",
+      "dueDate": "2025-10-18T12:30:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "c3d4e5f6-a7b8-4c9d-8e7f-6a5b4c3d2e13",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Cajazeiras] Atualizar cadastro no MTE",
+      "description": "Rever dados institucionais e dirigentes no sistema.",
+      "status": "inProgress",
+      "dueDate": "2025-09-17T13:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "e5f6a7b8-c9d0-4e1f-8a9b-b0c1d2e3f414",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Cajazeiras] Organizar arquivo digital",
+      "description": "Padronizar pastas e nomear documentos antigos.",
+      "status": "canceled",
+      "dueDate": null,
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "e5f6a7b8-c9d0-4e1f-8a9b-b0c1d2e3f414",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Cajazeiras] Revisar convênio em execução",
+      "description": "Conferir metas e cronograma físico-financeiro.",
+      "status": "open",
+      "dueDate": "2025-10-11T19:30:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "e5f6a7b8-c9d0-4e1f-8a9b-b0c1d2e3f414",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Vitória de Santo Antão] Plano de compras 2025",
+      "description": "Elaborar planejamento anual de aquisições.",
+      "status": "open",
+      "dueDate": "2025-11-07T22:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "f7a8b9c0-d1e2-4f3a-9b8c-7d6e5f4a3b15",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Vitória de Santo Antão] Atualizar site institucional",
+      "description": "Publicar atividades e documentos de transparência.",
+      "status": "inProgress",
+      "dueDate": "2025-09-30T14:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "f7a8b9c0-d1e2-4f3a-9b8c-7d6e5f4a3b15",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+    {
+      "title": "[ATR Vitória de Santo Antão] Prestação de contas — Setembro",
+      "description": "Fechar balancete e anexar comprovantes.",
+      "status": "finished",
+      "dueDate": "2025-09-12T23:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "f7a8b9c0-d1e2-4f3a-9b8c-7d6e5f4a3b15",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Campina Grande] Atualizar cadastro de fornecedores",
+      "description": "Solicitar documentação e certidões atualizadas.",
+      "status": "open",
+      "dueDate": "2025-10-04T23:30:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "b1c2d3e4-f5a6-4b7c-8d9e-0a1b2c3d4e12",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Picuí] Criar política de reembolso",
+      "description": "Definir regras e prazos para diárias e deslocamentos.",
+      "status": "open",
+      "dueDate": "2025-11-15T18:30:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "a7b1b1b0-7c0d-4c51-9f54-2b4c9c3b6e01",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Garanhuns] Controle de estoque da cozinha comunitária",
+      "description": "Criar planilha de entrada/saída e periodicidade de compras.",
+      "status": "inProgress",
+      "dueDate": "2025-09-27T21:30:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "0f3a7c25-8a64-4bda-9c83-3f9d1a4b8d03",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Sertânia] Criar fluxo de atendimento ao associado",
+      "description": "Definir etapas, SLA e registro de demandas.",
+      "status": "open",
+      "dueDate": "2025-10-25T17:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "5b9d2c36-3e70-4d1a-b5d2-1e6f2a7c9e04",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Arcoverde] Criar checklist de documentação para convênios",
+      "description": "Padronizar lista de documentos e responsáveis.",
+      "status": "finished",
+      "dueDate": "2025-09-10T20:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "d1c2e3f4-5678-4abc-8def-123456789e05",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Serra Talhada] Programa de educação financeira",
+      "description": "Planejar oficina para associados sobre orçamento familiar.",
+      "status": "open",
+      "dueDate": "2025-11-03T13:30:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "9a8b7c6d-5e4f-4a3b-9c2d-0f1e2d3c4b06",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Ouricuri] Mapa de riscos da sede",
+      "description": "Identificar riscos e sinalizar áreas conforme NR-23.",
+      "status": "inProgress",
+      "dueDate": "2025-10-01T15:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "3c2d1e0f-9a8b-4c7d-a1b2-3c4d5e6f7a07",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Salgueiro] Revisar contratos de prestação de serviços",
+      "description": "Atualizar cláusulas de SLA e confidencialidade.",
+      "status": "open",
+      "dueDate": "2025-10-07T19:45:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "2b3c4d5e-6f70-4a81-8b92-a3b4c5d6e708",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Afogados da Ingazeira] Criar política de backup",
+      "description": "Definir periodicidade e armazenamento externo seguro.",
+      "status": "finished",
+      "dueDate": "2025-09-11T09:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "7f6e5d4c-3b2a-4c1d-b2c3-d4e5f6a7b809",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Petrolina] Agenda de visitas técnicas",
+      "description": "Montar calendário de visitas às comunidades rurais.",
+      "status": "open",
+      "dueDate": "2025-10-16T10:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "4e3d2c1b-0a9f-4e8d-9b7a-6c5d4e3f2a10",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Santa Cruz do Capibaribe] Treinamento de voluntários",
+      "description": "Capacitar equipe para atendimento ao público.",
+      "status": "inProgress",
+      "dueDate": "2025-09-28T14:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "8c7b6a5d-4e3f-4d2c-a1b0-9f8e7d6c5b11",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Campina Grande] Política de doações e patrocínios",
+      "description": "Definir critérios e contrapartidas.",
+      "status": "open",
+      "dueDate": "2025-11-06T20:30:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "b1c2d3e4-f5a6-4b7c-8d9e-0a1b2c3d4e12",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Patos] Criar rotina de arquivo físico",
+      "description": "Organizar armários por tipo de documento e prazos de guarda.",
+      "status": "finished",
+      "dueDate": "2025-09-04T16:00:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "c3d4e5f6-a7b8-4c9d-8e7f-6a5b4c3d2e13",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Cajazeiras] Mapeamento de necessidades dos associados",
+      "description": "Aplicar formulário sobre demandas de capacitação e crédito.",
+      "status": "open",
+      "dueDate": "2025-10-13T18:15:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "e5f6a7b8-c9d0-4e1f-8a9b-b0c1d2e3f414",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    },
+
+    {
+      "title": "[ATR Vitória de Santo Antão] Revisar políticas internas",
+      "description": "Atualizar regulamentos e procedimentos operacionais.",
+      "status": "inProgress",
+      "dueDate": "2025-10-10T12:30:00.000Z",
+      "creatorId": "ef54e560-2ae0-4af4-a773-50dafeec4eea",
+      "associationId": "f7a8b9c0-d1e2-4f3a-9b8c-7d6e5f4a3b15",
+      "teamIds": ["ef54e560-2ae0-4af4-a773-50dafeec4eea"]
+    }
+  ]
+}
