@@ -6,6 +6,7 @@ import { AssociationModule } from './association/association.module';
 import { TaskModule } from './task/task.module';
 import { AuthModule } from './auth/auth.module';
 import { MetaModule } from './meta/meta.module';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { MetaModule } from './meta/meta.module';
     TaskModule,
     AuthModule,
     MetaModule,
+    SeedModule,
   ],
   controllers: [],
   providers: [],
