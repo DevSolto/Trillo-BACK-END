@@ -37,10 +37,12 @@ export class TaskController {
   })
   @ApiQuery({ name: 'title', required: false, type: String, description: 'Filter by title (contains)' })
   @ApiQuery({ name: 'status', required: false, enum: ['open', 'inProgress', 'finished', 'canceled'], description: 'Filter by status' })
+  @ApiQuery({ name: 'priority', required: false, enum: ['low', 'medium', 'high'], description: 'Filter by priority' })
   @ApiQuery({ name: 'creatorId', required: false, type: String, description: 'Filter by creator (UUID)' })
+  @ApiQuery({ name: 'associationId', required: false, type: String, description: 'Filter by association (UUID)' })
   @ApiQuery({ name: 'page', required: false, type: Number, description: 'Current page', example: 1 })
   @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Items per page', example: 10 })
-  @ApiQuery({ name: 'sortBy', required: false, enum: ['id', 'title', 'status', 'createdAt', 'dueDate'], description: 'Sort field' })
+  @ApiQuery({ name: 'sortBy', required: false, enum: ['id', 'title', 'status', 'priority', 'createdAt', 'dueDate'], description: 'Sort field' })
   @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'], description: 'Sort direction' })
   findAll(@Query() query: QueryTaskDto) {
     return this.taskService.findAll(query);

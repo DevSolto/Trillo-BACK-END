@@ -1,5 +1,6 @@
 import { User } from "src/user/entities/user.entity";
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Association } from "src/association/entities/association.entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 export enum TaskStatus {
     OPEN = "open",
@@ -8,6 +9,11 @@ export enum TaskStatus {
     CANCELED = "canceled"
 }
 
+export enum TaskPriority {
+    LOW = 'low',
+    MEDIUM = 'medium',
+    HIGH = 'high',
+}
 
 @Entity("task")
 export class Task {
@@ -31,6 +37,13 @@ export class Task {
     })
     status: TaskStatus
 
+    @Column({
+        type: 'enum',
+        enum: TaskPriority,
+        default: TaskPriority.MEDIUM,
+    })
+    priority: TaskPriority
+
     @CreateDateColumn({ type: 'timestamptz' })
     createdAt: Date
 
@@ -42,6 +55,10 @@ export class Task {
         (user)=> user.createdTasks
     )
     creator: User
+
+    @ManyToOne(() => Association, (association) => association.tasks, { nullable: false, onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'association_id' })
+    association: Association
 
     @ManyToMany(() => User, (user) => user.participatingTasks)
     @JoinTable({
