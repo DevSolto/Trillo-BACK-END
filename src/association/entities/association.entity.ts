@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Task } from "src/task/entities/task.entity";
 
 
 
@@ -22,4 +23,7 @@ export class Association {
         default:true
     })
     status:boolean
+
+    @OneToMany(() => Task, (task) => task.association)
+    tasks: Task[]
 }
